@@ -4,6 +4,7 @@
 #include "piece.h"
 
 enum SubscriptionType {All, CaptureOnly};
+class Piece;
 
 class Observer {
 public:
