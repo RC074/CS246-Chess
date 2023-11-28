@@ -1,29 +1,29 @@
 #ifndef __BOARD_H__
 #define __BOARD_H__
-#include "observer.h"
+#include <vector>
 #include "player.h"
 #include "piece.h"
-#include <vector>
+
 using namespace std;
 
-class Board: public Observer{
-    vector<vector<Piece*>> theBoard;
-    bool won;
+const int BOARD_WIDTH = 8;
+const int BOARD_WIDTH = 8;
+
+class Board{
+    Player *p1, *p2;
+    vector<vector<Piece *>> theGrid;
     void clearBoard();
-    const int boardSize = 8;
-    vector<vector<int>> stack;
 public:
-    void init();
+    Board(Player *p1, Player *p2);
+    void init(bool p1White);
     bool move(vector<int> p1, vector<int> p2);
-    
     Piece* getPieceAt(vector<int> p);
     vector<vector<Piece*>> getBoard();
     Color getWinner();
     void undo();
     vector<int> getPreviousMove();
-    Player* getPlayerBlack();
-    Player* getPlayerWhite();
-    // test
+    Player getPlayerBlack();
+    Player getPlayerWhite();
 };
 
 #endif
