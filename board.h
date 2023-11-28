@@ -11,8 +11,9 @@ const int BOARD_WIDTH = 8;
 
 class Board{
     Player *p1, *p2;
-    vector<vector<Piece *>> theGrid;
+    vector<vector<Piece *>> theBoard;
     void clearBoard();
+    bool won;
 public:
     Board(Player *p1, Player *p2);
     void init(bool p1White);
@@ -22,8 +23,8 @@ public:
     Color getWinner();
     void undo();
     vector<int> getPreviousMove();
-    Player getPlayerBlack();
-    Player getPlayerWhite();
+    Player *getPlayerBlack();
+    Player *getPlayerWhite();
 };
 
 #endif
