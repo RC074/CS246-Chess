@@ -3,7 +3,7 @@
 #include "observer.h"
 
 class Board: public Observer{
-
+    void f();
 };
 
 #endif
