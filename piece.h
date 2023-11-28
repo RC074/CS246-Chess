@@ -3,6 +3,7 @@
 #define PIECE_H
 
 #include <vector>
+#include "observer.h"
 
 enum class PieceType { KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN, NONE };
 enum class Color { WHITE, BLACK, NO_COLOR };
@@ -15,28 +16,19 @@ struct Move {
 class Piece {
   int row;
   int col;
+  Color color;
+  std::vector<Observer> observers;
 public:
-    Piece(int row, int c);
+    Piece(int row, int col, Color color);
     virtual ~Piece() = default;
     virtual void notify(Piece &p) = 0;
     virtual PieceType pieceType() const = 0;
-    virtual Color getColor() const = 0;
-    virtual std::vector<Move> getPossibleMoves() const = 0;
-    // Other methods can be declared here
+    Color getColor() const;
+    int getRow() const;
+    int getCol() const;
+    void setPosition(int r, int c);
+    void notifyAllObservers();
+    virtual std::vector<Move> getPossibleMoves(std::vector<std::vector<Piece> > board) const = 0;
 };
 
-class King : public Piece {
-public:
-    std::vector<Move> getPossibleMoves() const override;
-    // Other King-specific methods and members
-};
-
-class Queen : public Piece {
-public:
-    std::vector<Move> getPossibleMoves() const override;
-    // Other Queen-specific methods and members
-};
-
-// ... Other pieces follow a similar pattern ...
-
-#endif // PIECE_H
+#endif
