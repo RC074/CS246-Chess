@@ -4,6 +4,7 @@
 
 class Board: public Observer{
     void f();
+    // test
 };
 
 #endif
