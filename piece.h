@@ -15,12 +15,13 @@ struct Move {
 class Piece {
   int row;
   int col;
+  PieceType pt;
 public:
     Piece(int row, int c);
     virtual ~Piece() = default;
     virtual void notify(Piece &p) = 0;
-    virtual PieceType pieceType() const = 0;
-    virtual Color getColor() const = 0;
+    PieceType pieceType() const;
+    Color getColor() const;
     virtual std::vector<Move> getPossibleMoves() const = 0;
     // Other methods can be declared here
 };
