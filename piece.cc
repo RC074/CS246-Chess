@@ -19,6 +19,10 @@ void Piece::setPosition(int r, int c) {
   this->col = c;
 }
 
+void Piece::setIsCaptured(bool t) {
+  this->isCaptured = t;
+}
+
 void Piece::notifyAllObservers() {
   // for (auto ob : observers) {
   //   ob.notify(this);

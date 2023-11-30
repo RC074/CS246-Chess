@@ -81,10 +81,22 @@ void Board::clearBoard() {
 //     won = false;
 // }
 
-bool Board::move(vector<int> p1, vector<int> p2) {
+bool Board::move(Piece *pieceToMove, int row, int col) {
     // we check if the move is a valid move
-    // if it is, we add the move to the stack in the form [r1, c1, r2, c2]
-    Piece* tmp = theBoard[p1[0]][p1[1]];
+    // if it is, we add the move to the stack ian the form [r1, c1, r2, c2]
+    if (!pieceToMove) return false;
+    vector<Move> moves = pieceToMove->getPossibleMoves(theBoard);
+    for (Move m : moves) {
+        if (m.r1 == row && m.c1 == col) {
+            pieceToMove->setPosition(row, col);
+            if (m.captures) {
+                Piece *capturedPiece = m.captures;
+                capturedPiece->setIsCaptured(true);
+                capturedPiece->notifyAllObservers();
+            }
+            pieceToMove->notifyAllObservers();
+        }
+    }
     
 }
 

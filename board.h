@@ -16,7 +16,7 @@ class Board{
 public:
     Board(Player *p1, Player *p2);
     void init(bool p1White);
-    bool move(vector<int> p1, vector<int> p2);
+    bool move(Piece *pieceToMove, int row, int col);
     Piece* getPieceAt(vector<int> p);
     vector<vector<Piece*>> getBoard();
     Color getWinner();
