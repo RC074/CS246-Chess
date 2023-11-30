@@ -4,6 +4,12 @@
 
 #include <vector>
 #include "observer.h"
+#include "king.h"
+#include "queen.h"
+#include "bishop.h"
+#include "knight.h"
+#include "rook.h"
+#include "pawn.h"
 
 enum class PieceType { KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN, NONE };
 enum class Color { WHITE, BLACK, NO_COLOR };
