@@ -10,6 +10,7 @@ protected:
 public:
     void move();
     void setColor(Color c);
+    Color getColor();
 };
 
 #endif
