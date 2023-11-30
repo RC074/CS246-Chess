@@ -33,35 +33,62 @@ void Board::clearBoard() {
     won = false;
 }
 
-// void Board::init() {
-//     // equivlent to the Grid class for A4
-//     // clear grid?
-//     // init grid of PIECES
-//     clearBoard();
-    
-//     won = false;
-// }
-
 bool Board::move(vector<int> p1, vector<int> p2) {
-    // we check if the move is a valid move
-    // if it is, we add the move to the stack in the form [r1, c1, r2, c2]
-    Piece* tmp = theBoard[p1[0]][p1[1]];
-    
+    // 
 }
 
-Piece* Board::getPieceAt(vector<int> p) {
+Piece* Board::getPieceAt(int row, int col) {
     // recall vector<int> p is in the form [r, c]
-    return theBoard[p[0]][p[1]];
+    return theBoard[row][col];
 }
 
-vector<vector<Piece*>> Board::getBoard() {}
+vector<vector<Piece*>> Board::getBoard() {
+    return theBoard;
+}
 
-Color Board::getWinner() {}
+Color Board::getWinner() {
+    // return the piece that made the last move's color.
+    Move prevMove = getPreviousMove();
+    return getPieceAt(prevMove.r1, prevMove.c1)->getColor();
+}
 
-void Board::undo() {}
+void Board::undo() {
+    // pop the last move off the stack (with getPreviousMove() and pop_back()
+    // move the piece back to its original position (first two num in the prevMove vector)
+    // set the piece at the new position to empty piece? or the piece that was there before - can get by the piece before?
+    // set the piece at the old position to the piece we popped off the stack
+    // set the piece's position to the old position
 
-vector<int> Board::getPreviousMove() {}
+    Move prevMove = getPreviousMove();
+    int oldr = prevMove.r0;
+    int oldc = prevMove.c0; 
+    int newr = prevMove.r1;
+    int newc = prevMove.c1;
 
-Player* Board::getPlayerBlack() {}
+    Piece* newPosPiece = theBoard[newr][newc]; // the piece that was at the new position
+    history.pop_back();
+    // if there was a capture, then the piece at the new position is the captured piece
+    theBoard[newr][newc] = prevMove.captures ? const_cast<Piece*>(prevMove.captures) : nullptr;
+    theBoard[oldr][oldc] = newPosPiece; // set the old position to the piece that was at the new position
+    newPosPiece->setPosition(oldr, oldc); // set the piece's position to the old position
+}
 
-Player* Board::getPlayerWhite() {}
+Move Board::getPreviousMove() {
+    return history.back();
+}
+
+Player* Board::getPlayerBlack() {
+    if (p1->getColor() == Color::BLACK) {
+        return p1;
+    } else {
+        return p2;
+    }
+}
+
+Player* Board::getPlayerWhite() {
+    if (p1->getColor() == Color::WHITE) {
+        return p1;
+    } else {
+        return p2;
+    }
+}
