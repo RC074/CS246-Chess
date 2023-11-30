@@ -10,7 +10,9 @@ enum class Color { WHITE, BLACK, NO_COLOR };
 
 struct Move {
     int row, col;
-    Piece *p;
+    int action; // 0 for going to empty, 1 for capture
+    const Piece *p;
+    
 };
 
 class Piece {
@@ -28,7 +30,7 @@ public:
     int getCol() const;
     void setPosition(int r, int c);
     void notifyAllObservers();
-    virtual std::vector<Move> getPossibleMoves(std::vector<std::vector<Piece> > board) const = 0;
+    virtual std::vector<Move> getPossibleMoves(std::vector<std::vector<Piece*> > board) const = 0;
 };
 
 #endif
