@@ -7,7 +7,7 @@
 using namespace std;
 
 const int BOARD_SIZE = 8;
-
+class Player;
 class Board{
     Player *p1, *p2;
     vector<vector<Piece *>> theBoard;

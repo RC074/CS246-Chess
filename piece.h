@@ -4,12 +4,6 @@
 
 #include <vector>
 #include "observer.h"
-#include "king.h"
-#include "queen.h"
-#include "bishop.h"
-#include "knight.h"
-#include "rook.h"
-#include "pawn.h"
 
 enum class PieceType { KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN, NONE };
 enum class Color { WHITE, BLACK, NO_COLOR };
@@ -38,7 +32,7 @@ public:
     void setPosition(int r, int c);
     void notifyAllObservers();
     virtual std::vector<Move> getPossibleMoves(std::vector<std::vector<Piece*> > board) const = 0;
-    void Piece::setIsCaptured(bool t);
+    void setIsCaptured(bool t);
 };
 
 #endif

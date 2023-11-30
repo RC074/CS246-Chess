@@ -1,33 +1,21 @@
 #include "board.h"
-#include "piece.h"
+// #include "piece.h"
+#include "king.h"
+#include "queen.h"
+#include "bishop.h"
+#include "knight.h"
+#include "rook.h"
+#include "pawn.h"
 
 using namespace std;
 using Point = pair<int, int>;
-
-Board::Board(Player *p1, Player *p2) : 
-        p1{p1}, p2{p2}, 
-        theBoard{vector<vector<Piece *>>(BOARD_SIZE, 
-            vector<Piece *>(BOARD_SIZE, nullptr))}
-    {}
-
-void Board::init(bool p1White) {
-    clearBoard();
-    // the board is filled with nullptr now
-    p1->setColor((p1White ? Color::WHITE : Color::BLACK));
-    p1->setColor(((!p1White) ? Color::WHITE : Color::BLACK));
-    for (int row = 0; row < theBoard.size(); ++row) {
-        for (int col = 0; col < theBoard[row].size(); ++col) {
-            theBoard[row][col] = defaultConstructPiece(row, col);
-        }
-    }
-}
 
 // black pieces on the top, rows and cols indexed from 0-7
 Piece *defaultConstructPiece(int row, int col) {
     if (!(row <= 7 && row >= 0)) throw std::out_of_range{
         "rows and cols indexed from 0-7"
     };
-    if (row > 1 || row < 6) return nullptr;
+    if (row > 1 && row < 6) return nullptr;
 
     Color color = (row <= 5) ? Color::BLACK : Color::WHITE;
     // pawns
@@ -62,6 +50,25 @@ Piece *defaultConstructPiece(int row, int col) {
     }
 }
 
+Board::Board(Player *p1, Player *p2) : 
+        p1{p1}, p2{p2}, 
+        theBoard{vector<vector<Piece *>>(BOARD_SIZE, 
+            vector<Piece *>(BOARD_SIZE, nullptr))}
+    {}
+
+void Board::init(bool p1White) {
+    clearBoard();
+    // the board is filled with nullptr now
+    p1->setColor((p1White ? Color::WHITE : Color::BLACK));
+    p1->setColor(((!p1White) ? Color::WHITE : Color::BLACK));
+    for (int row = 0; row < theBoard.size(); ++row) {
+        for (int col = 0; col < theBoard[row].size(); ++col) {
+            theBoard[row][col] = defaultConstructPiece(row, col);
+        }
+    }
+}
+
+
 void Board::clearBoard() {
     for (int i = 0; i < theBoard.size(); ++i) {
         for (int j = 0; j < theBoard[i].size(); ++j) {
@@ -80,6 +87,8 @@ bool Board::move(Piece *pieceToMove, int row, int col) {
     for (Move m : moves) {
         if (m.r1 == row && m.c1 == col) {
             pieceToMove->setPosition(row, col);
+            theBoard[m.r0][m.c0] = nullptr;
+            theBoard[m.r1][m.c1] = pieceToMove;
             if (m.captures) {
                 Piece *capturedPiece = m.captures;
                 capturedPiece->setIsCaptured(true);
@@ -88,11 +97,11 @@ bool Board::move(Piece *pieceToMove, int row, int col) {
             pieceToMove->notifyAllObservers();
         }
     }
+    return true;
     
 }
 
 Piece* Board::getPieceAt(int row, int col) {
-    // recall vector<int> p is in the form [r, c]
     return theBoard[row][col];
 }
 

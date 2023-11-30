@@ -1,7 +1,9 @@
 #ifndef __PLAYER_H__
 #define __PLAYER_H__
 #include "board.h"
+#include "piece.h"
 
+class Board;
 class Player
 {
     Board *b;

@@ -1,20 +1,20 @@
-#include "knight.h"
+#include "rook.h"
 
-Knight::Knight(int row, int col, Color color):Piece{row, col, color} {}
+Rook::Rook(int row, int col, Color color):Piece{row, col, color} {}
 
-Knight::~Knight() {
+Rook::~Rook() {
 }
 
-void Knight::notify(Piece &p) {
+void Rook::notify(Piece &p) {
     // Implement the logic to handle the notification from another piece
 }
 
-PieceType Knight::pieceType() const {
-    return PieceType::KNIGHT;
+PieceType Rook::pieceType() const {
+    return PieceType::ROOK;
 }
 
 
-std::vector<Move> Knight::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
+std::vector<Move> Rook::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
     std::vector<Move> moves;
 
     const int directions[8][2] = {
@@ -28,7 +28,7 @@ std::vector<Move> Knight::getPossibleMoves(std::vector<std::vector<Piece*> > boa
         {1, 1}   
     };
 
-    // Get the Knight's current position (row, col)
+    // Get the Rook's current position (row, col)
     int currentRow = getRow();
     int currentCol = getCol();
 
