@@ -1,4 +1,5 @@
 *.o
 *.D
 *.d
-./.vscode
+.vscode/
+chess

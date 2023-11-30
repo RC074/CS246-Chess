@@ -1,8 +1,13 @@
 #include "board.h"
+#include "piece.h"
+
+using namespace std;
+using Point = pair<int, int>;
 
 Board::Board(Player *p1, Player *p2) : 
         p1{p1}, p2{p2}, 
-        theBoard{vector<vector<Piece *>>(8, vector<Piece *>(8, nullptr))}
+        theBoard{vector<vector<Piece *>>(BOARD_SIZE, 
+            vector<Piece *>(BOARD_SIZE, nullptr))}
     {}
 
 void Board::init(bool p1White) {
@@ -19,8 +24,18 @@ void Board::init(bool p1White) {
 
 // black pieces on the top, rows and cols indexed from 0-7
 Piece *constructPiece(int row, int col) {
-    if (!(row <= 7 && row >= 0)) return nullptr;
-
+    if (!(row <= 7 && row >= 0)) throw std::out_of_range{
+        "rows and cols indexed from 0-7"
+    };
+    if (row > 1 || row < 6) return nullptr;
+    Piece *newPiece = nullptr;
+    if (row == 1 || row == 6) {} // pawns
+    
+    Point loc {row, col};
+    if (loc == Point{0, 0} || loc == Point{0, 7} ||
+        loc == Point{7, 0} || loc == Point{7, 7}) {} // rock
+    
+    
 }
 
 void Board::clearBoard() {

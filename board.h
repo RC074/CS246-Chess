@@ -6,8 +6,7 @@
 
 using namespace std;
 
-const int BOARD_WIDTH = 8;
-const int BOARD_WIDTH = 8;
+const int BOARD_SIZE = 8;
 
 class Board{
     Player *p1, *p2;
