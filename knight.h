@@ -1,16 +1,16 @@
-// Queen.h
-#ifndef QUEEN_H
-#define QUEEN_H
+// Knight.h
+#ifndef KNIGHT_H
+#define KNIGHT_H
 
 #include "piece.h"
 
-class Queen : public Piece {
+class Knight : public Piece {
 public:
-    Queen(int row, int col, Color color);
-    ~Queen() override;
+    Knight(int row, int col, Color color);
+    ~Knight() override;
     std::vector<Move> getPossibleMoves(std::vector<std::vector<Piece*> > board) const override;
     PieceType pieceType() const override;
     void notify(Piece &p) override;
 };
 
-#endif // QUEEN_H
+#endif // KNIGHT_H

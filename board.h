@@ -6,8 +6,7 @@
 
 using namespace std;
 
-const int BOARD_WIDTH = 8;
-const int BOARD_WIDTH = 8;
+const int BOARD_SIZE = 8;
 
 class Board{
     Player *p1, *p2;
@@ -18,7 +17,7 @@ class Board{
 public:
     Board(Player *p1, Player *p2);
     void init(bool p1White);
-    bool move(vector<int> p1, vector<int> p2);
+    bool move(Piece *pieceToMove, int row, int col);
     Piece* getPieceAt(int row, int col);
     vector<vector<Piece*>> getBoard();
     Color getWinner();
