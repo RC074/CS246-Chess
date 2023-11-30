@@ -17,25 +17,49 @@ void Board::init(bool p1White) {
     p1->setColor(((!p1White) ? Color::WHITE : Color::BLACK));
     for (int row = 0; row < theBoard.size(); ++row) {
         for (int col = 0; col < theBoard[row].size(); ++col) {
-            
+            theBoard[row][col] = defaultConstructPiece(row, col);
         }
     }
 }
 
 // black pieces on the top, rows and cols indexed from 0-7
-Piece *constructPiece(int row, int col) {
+Piece *defaultConstructPiece(int row, int col) {
     if (!(row <= 7 && row >= 0)) throw std::out_of_range{
         "rows and cols indexed from 0-7"
     };
     if (row > 1 || row < 6) return nullptr;
-    Piece *newPiece = nullptr;
-    if (row == 1 || row == 6) {} // pawns
+
+    Color color = (row <= 5) ? Color::BLACK : Color::WHITE;
+    // pawns
+    if (row == 1 || row == 6) return new Pawn {row, col, color};
     
     Point loc {row, col};
-    if (loc == Point{0, 0} || loc == Point{0, 7} ||
-        loc == Point{7, 0} || loc == Point{7, 7}) {} // rock
+    // rooks
+    if (loc == Point{0,0} || loc == Point{0,7} ||
+        loc == Point{7,0} || loc == Point{7,7}) {
+            return new Rook {row, col, color};
+    }
+    // knights
+    if (loc == Point{0,1} || loc == Point{0,6} ||
+        loc == Point{7,1} || loc == Point{7,6}) {
+            return new Knight {row, col, color};
+    }
+
+    // Bishops
+    if (loc == Point{0,2} || loc == Point{0,5} ||
+        loc == Point{7,2} || loc == Point{7, 5}) {
+            return new Bishop {row, col, color};
+    }
+
+    // Queens
+    if (loc == Point{0,3} || loc == Point{7,3}) {
+        return new Queen {row, col, color};
+    }
     
-    
+    // Kings
+    if (loc == Point{0,4} || loc == Point{7,4}) {
+        return new King {row, col, color};
+    }
 }
 
 void Board::clearBoard() {
