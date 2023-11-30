@@ -1,6 +1,5 @@
 {
     "files.associations": {
-        "vector": "cpp",
-        "stdexcept": "cpp"
+        "vector": "cpp"
     }
 }
