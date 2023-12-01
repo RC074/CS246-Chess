@@ -17,31 +17,25 @@ PieceType Knight::pieceType() const {
 std::vector<Move> Knight::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
     std::vector<Move> moves;
 
-    const int directions[8][2] = {
-        {-1, -1},
-        {-1, 0}, 
-        {-1, 1}, 
-        {0, -1}, 
-        {0, 1},   
-        {1, -1},  
-        {1, 0}, 
-        {1, 1}   
+     const int movesOffset[8][2] = {
+        {-2, -1}, {-1, -2},
+        {-2, 1},  {-1, 2},
+        {1, -2},  {2, -1},
+        {1, 2},   {2, 1}
     };
 
-    // Get the Knight's current position (row, col)
     int currentRow = getRow();
     int currentCol = getCol();
 
-    for (const auto &direction : directions) {
-        int newRow = currentRow + direction[0];
-        int newCol = currentCol + direction[1];
+    for (const auto &offset : movesOffset) {
+        int newRow = currentRow + offset[0];
+        int newCol = currentCol + offset[1];
 
         if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
             Piece *targetPiece = board[newRow][newCol];
-            if (targetPiece->getColor() != this->getColor()) {
+            if (!targetPiece || targetPiece->getColor() != this->getColor()) {
                 moves.push_back({currentRow, currentCol, newRow, newCol, targetPiece, this});
             }
-            
         }
     }
 

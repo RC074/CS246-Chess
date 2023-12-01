@@ -3,12 +3,15 @@
 #include <vector>
 #include "player.h"
 #include "piece.h"
+#include "textdisplay.h"
 #include "king.h"
 
 using namespace std;
 
+
 const int BOARD_SIZE = 8;
 class Player;
+class TextDisplay;
 class Board{
     Player *blackPlayer, *whitePlayer;
     King *blackKing = nullptr;
@@ -17,8 +20,10 @@ class Board{
     void clearBoard();
     bool won;
     vector<Move> history;
+    TextDisplay *td;
 public:
     Board();
+    ~Board();
     void init(Player &blackPlayer, Player &WhitePlayer, 
               bool useStandard = false);
     void removePieceAt(int row, int col);
@@ -33,6 +38,7 @@ public:
     Move getPreviousMove();
     Player *getPlayerBlack();
     Player *getPlayerWhite();
+    friend std::ostream &operator<<(std::ostream &out, const Board &g);
 };
 
 #endif

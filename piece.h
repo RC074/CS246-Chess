@@ -8,18 +8,18 @@
 enum class PieceType { KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN, NONE };
 enum class Color { WHITE, BLACK, NO_COLOR };
 
+class Piece;
 struct Move {
     int r0, c0, r1, c1;
     Piece *captures;
     const Piece *p;
-    
 };
 
 class Piece {
   int row;
   int col;
   Color color;
-  std::vector<Observer> observers;
+  std::vector<Observer*> observers;
   bool isCaptured = false;
 public:
     Piece(int row, int col, Color color);
@@ -30,7 +30,8 @@ public:
     int getRow() const;
     int getCol() const;
     void setPosition(int r, int c);
-    void notifyAllObservers();
+    void notifyAllObservers(Move m);
+    void attach(Observer *ob);
     virtual std::vector<Move> getPossibleMoves(std::vector<std::vector<Piece*> > board) const = 0;
     void setIsCaptured(bool t);
 };

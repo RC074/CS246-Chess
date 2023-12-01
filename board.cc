@@ -72,19 +72,24 @@ Piece *defaultConstructPiece(int row, int col) {
     }
 }
 
-Board::Board() : 
-        theBoard{vector<vector<Piece *>>(BOARD_SIZE, 
-            vector<Piece *>(BOARD_SIZE, nullptr))}
-    {}
+Board::Board(): theBoard{vector<vector<Piece *>>(BOARD_SIZE, vector<Piece *>(BOARD_SIZE, nullptr))},
+                td{new TextDisplay{BOARD_SIZE}} {}
+
+Board::~Board() {
+    delete td;
+    td = nullptr;
+}
 
 void Board::init(Player &blackPlayer, Player &whitePlayer, 
-                 bool useStandard = false) {
+                 bool useStandard) {
     clearBoard();
     // the board is filled with nullptr now
     this->blackPlayer = &blackPlayer;
     this->whitePlayer = &whitePlayer;
     blackPlayer.setColor(Color::BLACK);
     whitePlayer.setColor(Color::WHITE);
+    delete td;
+    td = new TextDisplay(BOARD_SIZE);
     if (!useStandard) return;
     for (int row = 0; row < theBoard.size(); ++row) {
         for (int col = 0; col < theBoard[row].size(); ++col) {
@@ -118,9 +123,12 @@ bool Board::move(Piece *pieceToMove, int row, int col) {
             if (m.captures) {
                 Piece *capturedPiece = m.captures;
                 capturedPiece->setIsCaptured(true);
-                capturedPiece->notifyAllObservers();
+
+                Move m = getPreviousMove();
+                capturedPiece->notifyAllObservers(m);
             }
-            pieceToMove->notifyAllObservers();
+            Move m = getPreviousMove();
+            pieceToMove->notifyAllObservers(m);
         }
     }
     return true;
@@ -172,4 +180,9 @@ Player* Board::getPlayerBlack() {
 
 Player* Board::getPlayerWhite() {
     return whitePlayer;
+}
+
+ostream &operator<<(ostream &out, const Board &b) {
+    out << *b.td;
+    return out;
 }

@@ -38,16 +38,11 @@ std::vector<Move> Queen::getPossibleMoves(std::vector<std::vector<Piece*> > boar
 
         while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
             Piece *targetPiece = board[newRow][newCol];
-            if (!targetPiece) {
+            if (!targetPiece || targetPiece->getColor() != this->getColor()) {
                 moves.push_back({currentRow, currentCol, newRow, newCol, targetPiece, this});
             } else {
-                if (targetPiece->getColor() != this->getColor()) {
-                    // If it's an opponent's piece, add the move (capture) and break the loop
-                    moves.push_back({currentRow, currentCol, newRow, newCol, targetPiece, this});
-                }
-                break;
+              break;
             }
-
             newRow += direction[0];
             newCol += direction[1];
         }

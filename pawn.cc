@@ -16,34 +16,35 @@ PieceType Pawn::pieceType() const {
 
 std::vector<Move> Pawn::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
     std::vector<Move> moves;
+    bool moved = true;
+    int direction = (this->getColor() == Color::WHITE) ? -1 : 1; // Assuming white pawns move up (decrease in row)
 
-    const int directions[8][2] = {
-        {-1, -1},
-        {-1, 0}, 
-        {-1, 1}, 
-        {0, -1}, 
-        {0, 1},   
-        {1, -1},  
-        {1, 0}, 
-        {1, 1}   
-    };
-
-    // Get the Pawn's current position (row, col)
     int currentRow = getRow();
     int currentCol = getCol();
 
-    for (const auto &direction : directions) {
-        int newRow = currentRow + direction[0];
-        int newCol = currentCol + direction[1];
-
-        if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
-            Piece *targetPiece = board[newRow][newCol];
-            if (targetPiece->getColor() != this->getColor()) {
-                moves.push_back({currentRow, currentCol, newRow, newCol, targetPiece, this});
-            }
-            
+    int newRow = currentRow + direction;
+    if (newRow >= 0 && newRow < 8) {
+        Piece *targetPiece = board[newRow][currentCol];
+        if (!targetPiece || targetPiece->getColor() != this->getColor()) {
+            moves.push_back({currentRow, currentCol, newRow, currentCol, targetPiece, this});
         }
+        targetPiece = board[newRow][currentCol-1];
+        if (targetPiece && targetPiece->getColor() != this->getColor()) {
+          moves.push_back({currentRow, currentCol, newRow, currentCol-1, targetPiece, this});
+        }
+        targetPiece = board[newRow][currentCol+1];
+        if (targetPiece && targetPiece->getColor() != this->getColor()) {
+          moves.push_back({currentRow, currentCol, newRow, currentCol+1, targetPiece, this});
+        }
+        if (!moved) {
+          newRow += direction;
+          if (newRow >= 0 && newRow < 8) {
+              targetPiece = board[newRow][currentCol];
+              if (!targetPiece || targetPiece->getColor() != this->getColor()) {
+                  moves.push_back({currentRow, currentCol, newRow, currentCol, targetPiece, this});
+              }
+          }
+        }
+      }
+      return moves;
     }
-
-    return moves;
-}
