@@ -17,18 +17,13 @@ PieceType Bishop::pieceType() const {
 std::vector<Move> Bishop::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
     std::vector<Move> moves;
 
-    const int directions[8][2] = {
+    const int directions[4][2] = {
         {-1, -1},
-        {-1, 0}, 
-        {-1, 1}, 
-        {0, -1}, 
-        {0, 1},   
+        {-1, 1},  
         {1, -1},  
-        {1, 0}, 
         {1, 1}   
     };
 
-    // Get the Bishop's current position (row, col)
     int currentRow = getRow();
     int currentCol = getCol();
 
@@ -36,12 +31,16 @@ std::vector<Move> Bishop::getPossibleMoves(std::vector<std::vector<Piece*> > boa
         int newRow = currentRow + direction[0];
         int newCol = currentCol + direction[1];
 
-        if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+        while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
             Piece *targetPiece = board[newRow][newCol];
-            if (targetPiece->getColor() != this->getColor()) {
+            if (!targetPiece || targetPiece->getColor() != this->getColor()) {
                 moves.push_back({currentRow, currentCol, newRow, newCol, targetPiece, this});
+            } else {
+              break;
             }
-            
+
+            newRow += direction[0];
+            newCol += direction[1];
         }
     }
 

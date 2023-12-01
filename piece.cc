@@ -28,3 +28,7 @@ void Piece::notifyAllObservers() {
   //   ob.notify(this);
   // }
 }
+
+void Piece::attach(Observer *ob) {
+  observers.emplace_back(ob);
+}
