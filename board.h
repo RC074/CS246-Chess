@@ -30,6 +30,7 @@ public:
     void setPieceAt(PieceType pt, int row, int col, Color c);
     bool isValidBoard();
     void startGame();
+    void updateWin();
     bool move(Piece *pieceToMove, int row, int col);
     Piece* getPieceAt(int row, int col);
     vector<vector<Piece*>> getBoard();
