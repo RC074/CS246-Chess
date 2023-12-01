@@ -59,6 +59,8 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
                  bool useStandard = false) {
     clearBoard();
     // the board is filled with nullptr now
+    this->blackPlayer = &blackPlayer;
+    this->whitePlayer = &whitePlayer;
     blackPlayer.setColor(Color::BLACK);
     whitePlayer.setColor(Color::WHITE);
     if (!useStandard) return;
