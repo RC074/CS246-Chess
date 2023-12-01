@@ -3,20 +3,24 @@
 #include "player.h"
 
 class Computer: public Player {
-    Move bestNextMove;
 protected:
-    virtual int RankMove(Move &move) const = 0;
-    Move getNextMove() override;
+    Move bestNextMove;
+    virtual Move getNextMove() = 0;
 };
 
 class Level1: public Computer {
 protected:
-    int RankMove(Move &move) const override;
+    Move getNextMove() override;
 };
 
 class Level2: public Computer {
 protected:
-    int RankMove(Move &move) const override;
+    Move getNextMove() override;
+};
+
+class Level3: public Computer {
+protected:
+    Move getNextMove() override;
 };
 
 #endif

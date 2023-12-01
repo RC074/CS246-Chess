@@ -10,6 +10,28 @@
 using namespace std;
 using Point = pair<int, int>;
 
+void Board::removePieceAt(int row, int col) {
+    if (!theBoard[row][col]) return;
+    delete theBoard[row][col];
+    theBoard[row][col] = nullptr;
+}
+
+void Board::setPieceAt(PieceType pt, int row, int col, Color c) {
+    Piece *newPiece;
+    if (pt == PieceType::KING) {
+        newPiece = new King {row, col, c};
+    }
+    else if (pt == PieceType::BISHOP) newPiece = new Bishop {row, col, c};
+    else if (pt == PieceType::KNIGHT) newPiece = new Knight {row, col, c};
+    else if (pt == PieceType::PAWN) newPiece = new Pawn {row, col, c};
+    else if (pt == PieceType::QUEEN) newPiece = new Queen {row, col, c};
+    else if (pt == PieceType::ROOK) newPiece = new Rook {row, col, c}; 
+    else return;
+    
+    // put piece into the board
+    removePieceAt(row, col);
+    theBoard[row][col] = newPiece;
+}
 // black pieces on the top, rows and cols indexed from 0-7
 Piece *defaultConstructPiece(int row, int col) {
     if (!(row <= 7 && row >= 0)) throw std::out_of_range{
