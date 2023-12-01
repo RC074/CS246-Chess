@@ -111,7 +111,7 @@ void Board::clearBoard() {
             theBoard[i][j] = nullptr;
         }
     }
-    won = false;
+    winner = Color::NO_COLOR;
 }
 
 bool Board::move(Piece *pieceToMove, int row, int col) {

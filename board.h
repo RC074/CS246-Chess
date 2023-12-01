@@ -18,7 +18,7 @@ class Board{
     King *whiteKing = nullptr;
     vector<vector<Piece *>> theBoard;
     void clearBoard();
-    bool won;
+    Color winner;
     vector<Move> history;
     TextDisplay *td;
 public:
