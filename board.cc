@@ -83,6 +83,7 @@ Board::~Board() {
 void Board::init(Player &blackPlayer, Player &whitePlayer, 
                  bool useStandard) {
     clearBoard();
+
     // the board is filled with nullptr now
     this->blackPlayer = &blackPlayer;
     this->whitePlayer = &whitePlayer;
@@ -94,6 +95,9 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
     for (int row = 0; row < theBoard.size(); ++row) {
         for (int col = 0; col < theBoard[row].size(); ++col) {
             theBoard[row][col] = defaultConstructPiece(row, col);
+            td->notify(Move{row, col, row, col, nullptr, theBoard[row][col]});
+            if (theBoard[row][col]) theBoard[row][col]->attach(td);
+
         }
     }
 }
@@ -124,10 +128,10 @@ bool Board::move(Piece *pieceToMove, int row, int col) {
                 Piece *capturedPiece = m.captures;
                 capturedPiece->setIsCaptured(true);
 
-                Move m = getPreviousMove();
+                // Move m = getPreviousMove();
                 capturedPiece->notifyAllObservers(m);
             }
-            Move m = getPreviousMove();
+            // Move m = getPreviousMove();
             pieceToMove->notifyAllObservers(m);
         }
     }

@@ -28,22 +28,22 @@ char TextDisplay::pieceToChar(Piece *p) {
     return static_cast<char>(asciiValue);
 }
 
-void TextDisplay::init(Board &b) {
-    for (int i = 0; i < gridSize; i++) {
-        for (int j = 0; j < gridSize; j++) {
-            Piece *p = b.getPieceAt(i, j);
-            if (p) {
-                theDisplay[i][j] = pieceToChar(p);
-            } else {
-                if ((i + j) % 2 == 0) {
-                    theDisplay[i][j] = ' ';
-                } else {
-                    theDisplay[i][j] = '_';
-                }
-            }
-        }
-    }
-}
+// void TextDisplay::init(Board &b) {
+//     for (int i = 0; i < gridSize; i++) {
+//         for (int j = 0; j < gridSize; j++) {
+//             Piece *p = b.getPieceAt(i, j);
+//             if (p) {
+//                 theDisplay[i][j] = pieceToChar(p);
+//             } else {
+//                 if ((i + j) % 2 == 0) {
+//                     theDisplay[i][j] = ' ';
+//                 } else {
+//                     theDisplay[i][j] = '_';
+//                 }
+//             }
+//         }
+//     }
+// }
 
 void TextDisplay::notify(Move m) {
     int oldr = m.r0;
@@ -57,8 +57,10 @@ void TextDisplay::notify(Move m) {
         theDisplay[oldr][oldc] = '_'; // black square
     }
 
-    char pieceChar = pieceToChar(const_cast<Piece*>(m.p));
-    theDisplay[newr][newc] = pieceChar;
+    if (m.p) {
+        char pieceChar = pieceToChar(const_cast<Piece*>(m.p));
+        theDisplay[newr][newc] = pieceChar;
+    }
 }
 
 SubscriptionType TextDisplay::subType() {
