@@ -8,11 +8,11 @@ using namespace std;
 Level1 p1;
 Level1 p2;
 
-Board board {&p1, &p2};
+Board board {};
 
 int main(int argc, char const *argv[]) {
   cout << "HIHHIHI" << endl;
-  board.init(true);
+  board.init(p1, p2);
   Piece *p = board.getPieceAt(0,3);
   if (p) {
     cout << 3333 << endl;
