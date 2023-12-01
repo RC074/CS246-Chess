@@ -8,7 +8,7 @@ class Piece;
 
 class Observer {
 public:
-    virtual void notify(Piece * p) = 0;
+    virtual void notify(Move m) = 0;
     virtual SubscriptionType subType() = 0;
 };
 

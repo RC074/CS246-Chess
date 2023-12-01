@@ -3,6 +3,7 @@
 #include <vector>
 #include "player.h"
 #include "piece.h"
+#include "textdisplay.h"
 
 using namespace std;
 
@@ -14,8 +15,10 @@ class Board{
     void clearBoard();
     bool won;
     vector<Move> history;
+    TextDisplay *td;
 public:
     Board();
+    ~Board();
     void init(Player &blackPlayer, Player &WhitePlayer, 
               bool useStandard = false);
     void set();
@@ -27,6 +30,7 @@ public:
     Move getPreviousMove();
     Player *getPlayerBlack();
     Player *getPlayerWhite();
+    friend std::ostream &operator<<(std::ostream &out, const Board &g);
 };
 
 #endif

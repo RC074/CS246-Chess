@@ -23,8 +23,8 @@ void Piece::setIsCaptured(bool t) {
   this->isCaptured = t;
 }
 
-void Piece::notifyAllObservers() {
-  // for (auto ob : observers) {
-  //   ob.notify(this);
-  // }
+void Piece::notifyAllObservers(Move m) {
+  for (auto ob : observers) {
+    ob->notify(m);
+  }
 }
