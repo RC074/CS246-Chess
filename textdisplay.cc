@@ -1,8 +1,6 @@
 #include "textdisplay.h"
 
-TextDisplay::TextDisplay(int n): theDisplay(), gridSize{8} {
-    init();
-}
+TextDisplay::TextDisplay(int n): theDisplay(), gridSize{8} {}
 
 char TextDisplay::pieceToChar(Piece *p) {
     int asciiValue = 0;
@@ -23,6 +21,9 @@ char TextDisplay::pieceToChar(Piece *p) {
     } else { // pt == PieceType::PAWN
         asciiValue = 80;
     } 
+    if (c == Color::BLACK) {
+        asciiValue += 32;
+    }
 
     return static_cast<char>(asciiValue);
 }
@@ -37,24 +38,30 @@ void TextDisplay::notify(Move m) {
     int newr = m.r1;
     int newc = m.c1;
 
-    if (oldr % 2 == 0 or oldc % 2 == 0) {
-        theDisplay[oldr][oldc] = ' ';
+    if (oldr % 2 == 1 && oldc % 2 == 1 || oldr % 2 == 0 && oldc % 2 == 0) {
+        theDisplay[oldr][oldc] = ' '; // white square
     } else {
-        theDisplay[oldr][oldc] = '_';
+        theDisplay[oldr][oldc] = '_'; // black square
     }
 
-
-
+    char pieceChar = pieceToChar(const_cast<Piece*>(m.p));
+    theDisplay[newr][newc] = pieceChar;
 }
 
 SubscriptionType TextDisplay::subType() {
-
+    return SubscriptionType::All;
 }
 
-TextDisplay::~TextDisplay() {
-
-}
+TextDisplay::~TextDisplay() {}
 
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
-
+    for (int i = 0; i < td.gridSize; ++i) {
+        for (int j = 0; j < td.gridSize; ++j) {
+            if (j == td.theDisplay[0].size() - 1) {
+                out << td.theDisplay[i][j] << std::endl;
+            }
+            else out << td.theDisplay[i][j];
+        }
+    }
+    return out;
 }
