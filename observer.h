@@ -2,10 +2,9 @@
 #define __OBSERVER_H__
 
 #include <iostream>
-#include "piece.h"
 
 enum SubscriptionType {All, CaptureOnly};
-class Piece;
+struct Move;
 
 class Observer {
 public:

@@ -8,11 +8,11 @@
 enum class PieceType { KING, QUEEN, BISHOP, KNIGHT, ROOK, PAWN, NONE };
 enum class Color { WHITE, BLACK, NO_COLOR };
 
+class Piece;
 struct Move {
     int r0, c0, r1, c1;
     Piece *captures;
     const Piece *p;
-    
 };
 
 class Piece {

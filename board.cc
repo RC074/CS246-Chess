@@ -59,7 +59,7 @@ Board::~Board() {
 }
 
 void Board::init(Player &blackPlayer, Player &whitePlayer, 
-                 bool useStandard = false) {
+                 bool useStandard) {
     clearBoard();
     // the board is filled with nullptr now
     this->blackPlayer = &blackPlayer;

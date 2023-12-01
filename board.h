@@ -7,8 +7,10 @@
 
 using namespace std;
 
+
 const int BOARD_SIZE = 8;
 class Player;
+class TextDisplay;
 class Board{
     Player *blackPlayer, *whitePlayer;
     vector<vector<Piece *>> theBoard;

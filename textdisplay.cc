@@ -1,6 +1,6 @@
 #include "textdisplay.h"
 
-TextDisplay::TextDisplay(int n): theDisplay(), gridSize{8} {}
+TextDisplay::TextDisplay(int n): theDisplay{vector<vector<char>>(8, (vector<char>(8, ' ')))}, gridSize{8} {}
 
 char TextDisplay::pieceToChar(Piece *p) {
     int asciiValue = 0;
@@ -30,20 +30,18 @@ char TextDisplay::pieceToChar(Piece *p) {
 
 void TextDisplay::init(Board &b) {
     for (int i = 0; i < gridSize; i++) {
-        vector<char> tmp;
         for (int j = 0; j < gridSize; j++) {
             Piece *p = b.getPieceAt(i, j);
             if (!p) {
-                tmp.emplace_back(pieceToChar(p));
+                theDisplay[i][j] = pieceToChar(p);
             } else {
                 if ((i % 2 == 1 && j % 2 == 1) || (i % 2 == 0 && j % 2 == 0)) {
-                    tmp.emplace_back(" ");
+                    theDisplay[i][j] = ' ';
                 } else {
-                    tmp.emplace_back("_");
+                    theDisplay[i][j] = '_';
                 }
             }
         }
-        theDisplay.emplace_back(tmp);
     }
 }
 
@@ -53,7 +51,7 @@ void TextDisplay::notify(Move m) {
     int newr = m.r1;
     int newc = m.c1;
 
-    if (oldr % 2 == 1 && oldc % 2 == 1 || oldr % 2 == 0 && oldc % 2 == 0) {
+    if ((oldr % 2 == 1 && oldc % 2 == 1) || (oldr % 2 == 0 && oldc % 2 == 0)) {
         theDisplay[oldr][oldc] = ' '; // white square
     } else {
         theDisplay[oldr][oldc] = '_'; // black square
