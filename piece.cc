@@ -28,3 +28,7 @@ void Piece::notifyAllObservers(Move m) {
     ob->notify(m);
   }
 }
+
+void Piece::attach(Observer *ob) {
+  observers.emplace_back(ob);
+}

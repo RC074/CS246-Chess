@@ -31,6 +31,8 @@ public:
     int getCol() const;
     void setPosition(int r, int c);
     void notifyAllObservers(Move m);
+    void notifyAllObservers();
+    void attach(Observer *ob);
     virtual std::vector<Move> getPossibleMoves(std::vector<std::vector<Piece*> > board) const = 0;
     void setIsCaptured(bool t);
 };

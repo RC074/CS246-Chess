@@ -38,7 +38,7 @@ std::vector<Move> King::getPossibleMoves(std::vector<std::vector<Piece*> > board
 
         if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
             Piece *targetPiece = board[newRow][newCol];
-            if (targetPiece->getColor() != this->getColor()) {
+            if (!targetPiece || targetPiece->getColor() != this->getColor()) {
                 moves.push_back({currentRow, currentCol, newRow, newCol, targetPiece, this});
             }
             
