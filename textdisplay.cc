@@ -29,7 +29,22 @@ char TextDisplay::pieceToChar(Piece *p) {
 }
 
 void TextDisplay::init(Board &b) {
-
+    for (int i = 0; i < gridSize; i++) {
+        vector<char> tmp;
+        for (int j = 0; j < gridSize; j++) {
+            Piece *p = b.getPieceAt(i, j);
+            if (!p) {
+                tmp.emplace_back(pieceToChar(p));
+            } else {
+                if ((i % 2 == 1 && j % 2 == 1) || (i % 2 == 0 && j % 2 == 0)) {
+                    tmp.emplace_back(" ");
+                } else {
+                    tmp.emplace_back("_");
+                }
+            }
+        }
+        theDisplay.emplace_back(tmp);
+    }
 }
 
 void TextDisplay::notify(Move m) {
