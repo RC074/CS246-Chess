@@ -5,8 +5,8 @@
 
 using namespace std;
 
-Computer p1;
-Computer p2;
+Level1 p1;
+Level1 p2;
 
 Board board {&p1, &p2};
 

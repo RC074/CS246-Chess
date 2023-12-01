@@ -50,23 +50,25 @@ Piece *defaultConstructPiece(int row, int col) {
     }
 }
 
-Board::Board(Player *p1, Player *p2) : 
-        p1{p1}, p2{p2}, 
+Board::Board() : 
         theBoard{vector<vector<Piece *>>(BOARD_SIZE, 
             vector<Piece *>(BOARD_SIZE, nullptr))}
     {}
 
-void Board::init(bool p1White) {
+void Board::init(Player &blackPlayer, Player &whitePlayer, 
+                 bool useStandard = false) {
     clearBoard();
     // the board is filled with nullptr now
-    p1->setColor((p1White ? Color::WHITE : Color::BLACK));
-    p1->setColor(((!p1White) ? Color::WHITE : Color::BLACK));
+    blackPlayer.setColor(Color::BLACK);
+    whitePlayer.setColor(Color::WHITE);
+    if (!useStandard) return;
     for (int row = 0; row < theBoard.size(); ++row) {
         for (int col = 0; col < theBoard[row].size(); ++col) {
             theBoard[row][col] = defaultConstructPiece(row, col);
         }
     }
 }
+
 
 
 void Board::clearBoard() {
@@ -141,17 +143,9 @@ Move Board::getPreviousMove() {
 }
 
 Player* Board::getPlayerBlack() {
-    if (p1->getColor() == Color::BLACK) {
-        return p1;
-    } else {
-        return p2;
-    }
+    return blackPlayer;
 }
 
 Player* Board::getPlayerWhite() {
-    if (p1->getColor() == Color::WHITE) {
-        return p1;
-    } else {
-        return p2;
-    }
+    return whitePlayer;
 }

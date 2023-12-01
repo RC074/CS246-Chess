@@ -8,7 +8,8 @@ class Player
 {
     Board *b;
 protected:
-    virtual void getNextMove() = 0;
+    Board *getBoard();
+    virtual Move getNextMove() = 0;
 public:
     void move();
     void setColor(Color c);

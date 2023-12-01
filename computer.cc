@@ -1,3 +1,5 @@
 #include "computer.h"
 
-void Computer::getNextMove() {};
+Move Computer::getNextMove() {
+    
+}
