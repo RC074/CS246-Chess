@@ -6,12 +6,11 @@
 
 using namespace std;
 
-// Level1 p1;
-// Level1 p2;
+Level1 p1;
+Level1 p2;
 
 
 int main(int argc, char const *argv[]) {
-  cout << "HIHIHIHI" << endl;
   Board board {};
   // cout << "HIHHIHI" << endl;
   // board.init(p1, p2);
@@ -33,9 +32,8 @@ int main(int argc, char const *argv[]) {
   // }
   // if (board.getPieceAt(5,5)->pieceType() == PieceType::QUEEN) {
   //   cout << 22222 << endl;
-  cout << "HIHIHIHI" << endl;
+  board.init(p1, p2);
   TextDisplay td{8};
-  cout << "HIHIHIHI" << endl;
   td.init(board);
   cout << td << endl;
 }
