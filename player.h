@@ -7,8 +7,9 @@ class Board;
 class Player
 {
     Board *b;
+    Color color;
 protected:
-    Board *getBoard();
+    Board *getBoard() const;
     virtual Move getNextMove() = 0;
 public:
     void move();

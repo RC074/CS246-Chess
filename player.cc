@@ -8,5 +8,9 @@ void Player::move() {
     b->move(const_cast<Piece*>(next.p), next.r0, next.c0);
 }
 
-void Player::setColor(Color c){};
-Color Player::getColor() {};
+Board *Player::getBoard() const {
+    return b;
+}
+
+void Player::setColor(Color c){ color = c; };
+Color Player::getColor() { return color; };

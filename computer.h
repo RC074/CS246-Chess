@@ -5,7 +5,6 @@
 class Computer: public Player {
 protected:
     Move bestNextMove;
-    virtual Move getNextMove() = 0;
 };
 
 class Level1: public Computer {

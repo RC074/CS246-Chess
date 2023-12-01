@@ -1,7 +1,7 @@
 #include "computer.h"
 
 Move Level1::getNextMove() {
-    auto board = getBoard()->getBoard();
+    auto board = getBoard()->Board::getBoard();
     for (auto row:board) {
         for (auto piece:row) {
             if (!piece) continue;

@@ -32,10 +32,10 @@ void TextDisplay::init(Board &b) {
     for (int i = 0; i < gridSize; i++) {
         for (int j = 0; j < gridSize; j++) {
             Piece *p = b.getPieceAt(i, j);
-            if (!p) {
+            if (p) {
                 theDisplay[i][j] = pieceToChar(p);
             } else {
-                if ((i % 2 == 1 && j % 2 == 1) || (i % 2 == 0 && j % 2 == 0)) {
+                if ((i + j) % 2 == 0) {
                     theDisplay[i][j] = ' ';
                 } else {
                     theDisplay[i][j] = '_';
