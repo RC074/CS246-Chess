@@ -6,6 +6,10 @@ Color Piece::getColor() const {
   return color;
 }
 
+bool Piece::getIsCaptured() const {
+  return isCaptured;
+}
+
 int Piece::getRow() const {
   return row;
 }

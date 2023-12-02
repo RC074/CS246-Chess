@@ -20,8 +20,9 @@ class Piece {
   int col;
   Color color;
   std::vector<Observer*> observers;
+  bool isCaptured = false;
 public:
-    bool isCaptured = false;
+    bool getIsCaptured() const;
     Piece(int row, int col, Color color);
     virtual ~Piece() = default;
     virtual void notify(Piece &p) = 0;
