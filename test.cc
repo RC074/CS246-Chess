@@ -4,7 +4,6 @@
 #include "computer.h"
 #include "textdisplay.h"
 #include "human.h"
-#include "computer.h"
 #include "readable.h"
 #include <sstream>
 

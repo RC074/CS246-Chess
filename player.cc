@@ -1,5 +1,4 @@
 #include "player.h"
-#include "piece.h"
 
 using namespace std;
 

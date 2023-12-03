@@ -4,6 +4,7 @@
 #include <iostream>
 #include "piece.h"
 
+
 using namespace std;
 
 // (0,0) => a8; (7,7) => h1

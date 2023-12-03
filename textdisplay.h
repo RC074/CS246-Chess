@@ -5,6 +5,7 @@
 #include "board.h"
 
 class Board;
+class Piece;
 class TextDisplay: public Observer {
     std::vector<std::vector<char>> theDisplay;
     const int gridSize;

@@ -2,9 +2,13 @@
 #define __BOARD_H__
 #include <vector>
 #include "player.h"
-#include "piece.h"
 #include "textdisplay.h"
 #include "king.h"
+#include "queen.h"
+#include "bishop.h"
+#include "knight.h"
+#include "rook.h"
+#include "pawn.h"
 
 using namespace std;
 
@@ -12,6 +16,7 @@ using namespace std;
 const int BOARD_SIZE = 8;
 class Player;
 class TextDisplay;
+class King;
 class Board{
     Player *blackPlayer, *whitePlayer;
     King *blackKing = nullptr;

@@ -10,9 +10,6 @@ void King::notify(Piece &p) {
     
 }
 
-SubscriptionType King::subType() {
-    return SubscriptionType::KingObserver;
-}
 
 
 PieceType King::pieceType() const {

@@ -1,11 +1,5 @@
 #include "board.h"
-// #include "piece.h"
-#include "king.h"
-#include "queen.h"
-#include "bishop.h"
-#include "knight.h"
-#include "rook.h"
-#include "pawn.h"
+
 
 using namespace std;
 using Point = pair<int, int>;
