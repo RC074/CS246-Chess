@@ -2,6 +2,7 @@
 #define __PLAYER_H__
 #include "board.h"
 #include "piece.h"
+using namespace std;
 
 class Board;
 class Player
@@ -10,9 +11,10 @@ class Player
     Color color;
 protected:
     Board *getBoard() const;
-    virtual Move getNextMove() = 0;
+    virtual Move getNextMove(istream &in) = 0;
 public:
-    void move();
+    void resign();
+    virtual bool move(istream &instruction); // some player needs input
     void setColor(Color c);
     Color getColor();
 };

@@ -3,9 +3,9 @@
 
 using namespace std;
 
-void Player::move() {
-    Move next = getNextMove();
-    b->move(const_cast<Piece*>(next.p), next.r0, next.c0);
+bool Player::move(istream &in) {
+    Move next = getNextMove(in);
+    return b->move(const_cast<Piece*>(next.p), next.r0, next.c0);
 }
 
 Board *Player::getBoard() const {

@@ -21,6 +21,7 @@ class Board{
     Color winner;
     vector<Move> history;
     TextDisplay *td;
+    void updateWin(); // called at each move
 public:
     Board();
     ~Board();
@@ -28,9 +29,8 @@ public:
               bool useStandard = true);
     void removePieceAt(int row, int col);
     void setPieceAt(PieceType pt, int row, int col, Color c);
-    bool isValidBoard();
-    void startGame();
-    void updateWin();
+    bool validateBoard(); // use at the end of setup
+    bool move(int r0, int c0, int r1, int c1);
     bool move(Piece *pieceToMove, int row, int col);
     Piece* getPieceAt(int row, int col);
     vector<vector<Piece*>> getBoard();

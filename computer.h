@@ -9,17 +9,17 @@ protected:
 
 class Level1: public Computer {
 protected:
-    Move getNextMove() override;
+    Move getNextMove(istream &in) override;
 };
 
 class Level2: public Computer {
 protected:
-    Move getNextMove() override;
+    Move getNextMove(istream &in) override;
 };
 
 class Level3: public Computer {
 protected:
-    Move getNextMove() override;
+    Move getNextMove(istream &in) override;
 };
 
 #endif

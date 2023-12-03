@@ -13,6 +13,7 @@ struct Move {
     int r0, c0, r1, c1;
     Piece *captures;
     const Piece *p;
+    PieceType promotion = PieceType::NONE;
 };
 
 class Piece {
