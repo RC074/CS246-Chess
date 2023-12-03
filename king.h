@@ -4,6 +4,7 @@
 
 #include "piece.h"
 
+Move m;
 class King : public Piece {
 public:
     King(int row, int col, Color color);

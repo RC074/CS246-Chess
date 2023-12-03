@@ -22,6 +22,8 @@ class Board{
     vector<Move> history;
     TextDisplay *td;
     void updateWin(); // called at each move
+    vector<vector<bool>> whiteDangerZone;
+    vector<vector<bool>> blackDangerZone;
 public:
     Board();
     ~Board();
@@ -36,6 +38,9 @@ public:
     vector<vector<Piece*>> getBoard();
     Color getWinner();
     void undo();
+    void updateDangerZone(Player *playerToCheck);
+    bool inCheck(Color color);
+    bool checkMate(Color color);
     Move getPreviousMove();
     Player *getPlayerBlack();
     Player *getPlayerWhite();

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-enum SubscriptionType {All, CaptureOnly};
+enum SubscriptionType {All, KingObserver};
 struct Move;
 
 class Observer {
