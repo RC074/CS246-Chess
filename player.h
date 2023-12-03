@@ -14,9 +14,9 @@ protected:
     virtual Move getNextMove(istream &in) = 0;
 public:
     void resign();
-    virtual bool move(istream &instruction); // some player needs input
+    bool move(istream &instruction); // some player needs input
     void setColor(Color c);
-    Color getColor();
+    Color getColor() const;
 };
 
 #endif

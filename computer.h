@@ -4,7 +4,8 @@
 
 class Computer: public Player {
 protected:
-    Move bestNextMove;
+    vector<vector<bool>> getThreatBoard() const;
+    vector<vector<bool>> getCaptureBoard() const;
 };
 
 class Level1: public Computer {

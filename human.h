@@ -4,8 +4,8 @@
 #include "player.h"
 
 class Human: public Player {
-public:
-    bool move(istream &in) override;
+protected:
+    Move getNextMove(istream &in) override;
 };
 
 #endif

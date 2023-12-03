@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool Human::move(istream &in) {
+Move Human::getNextMove(istream &in) {
     string s;
     vector<string> instruction;
     while (in>>s) {
@@ -17,5 +17,12 @@ bool Human::move(istream &in) {
     istringstream p1 {instruction[1]};
     getPos(p0, r0, c0);
     getPos(p1, r1, c1);
-    return getBoard()->move(r0, c0, r1, c1);
+    Move move {r0, c0, r1, c1};
+    if (instruction.size() == 3) {
+        char c;
+        istringstream iss {instruction[2]};
+        iss >> c;
+        move.promotion = getPieceType(c);
+    }
+    return move;
 }
