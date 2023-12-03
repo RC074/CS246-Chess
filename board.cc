@@ -17,6 +17,15 @@ void Board::removePieceAt(int row, int col) {
     theBoard[row][col] = nullptr;
 }
 
+// struct Move {
+//     int r0, c0, r1, c1;
+//     Piece *captures = nullptr;
+//     const Piece *p = nullptr;
+//     PieceType promotion = PieceType::NONE;
+// };
+
+// td->notify(Move{row, col, row, col, nullptr, theBoard[row][col]});
+
 void Board::setPieceAt(PieceType pt, int row, int col, Color c) {
     Piece *newPiece;
     
@@ -27,6 +36,8 @@ void Board::setPieceAt(PieceType pt, int row, int col, Color c) {
     else if (pt == PieceType::QUEEN) newPiece = new Queen {row, col, c};
     else if (pt == PieceType::ROOK) newPiece = new Rook {row, col, c}; 
     else return;
+
+    td->notify(Move{row, col, row, col, newPiece, newPiece});
     
     // put piece into the board
     removePieceAt(row, col);
@@ -94,9 +105,9 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
     this->whitePlayer = &whitePlayer;
     blackPlayer.setColor(Color::BLACK);
     whitePlayer.setColor(Color::WHITE);
+    if (!useStandard) return;
     delete td;
     td = new TextDisplay(BOARD_SIZE);
-    if (!useStandard) return;
     for (int row = 0; row < theBoard.size(); ++row) {
         for (int col = 0; col < theBoard[row].size(); ++col) {
             auto newPiece = defaultConstructPiece(row, col);
