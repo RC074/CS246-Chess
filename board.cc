@@ -9,6 +9,7 @@
 
 using namespace std;
 using Point = pair<int, int>;
+using Row = vector<Piece *>;
 
 void Board::removePieceAt(int row, int col) {
     if (!theBoard[row][col]) return;
@@ -71,10 +72,13 @@ Piece *defaultConstructPiece(int row, int col) {
     }
 }
 
-Board::Board(): theBoard{vector<vector<Piece *>>(BOARD_SIZE, vector<Piece *>(BOARD_SIZE, nullptr))},
-                td{new TextDisplay{BOARD_SIZE}} {}
+Board::Board(): 
+    theBoard{vector<Row>(BOARD_SIZE, Row(BOARD_SIZE, nullptr))},
+    td{new TextDisplay{BOARD_SIZE}}, 
+    winner{Color::NO_COLOR} {}
 
 Board::~Board() {
+    clearBoard();
     delete td;
     td = nullptr;
 }
@@ -93,13 +97,58 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
     if (!useStandard) return;
     for (int row = 0; row < theBoard.size(); ++row) {
         for (int col = 0; col < theBoard[row].size(); ++col) {
-            theBoard[row][col] = defaultConstructPiece(row, col);
+            auto newPiece = defaultConstructPiece(row, col);
+            if (Point{row, col} == Point{0, 4}) {
+                blackKing = dynamic_cast<King *>(newPiece);
+            } else if (Point{row, col} == Point{7, 4}) {
+                whiteKing = dynamic_cast<King *>(newPiece);
+            }
+            theBoard[row][col] = newPiece;
             td->notify(Move{row, col, row, col, nullptr, theBoard[row][col]});
             if (theBoard[row][col]) theBoard[row][col]->attach(td);
-
         }
     }
 }
+
+
+bool Board::validateBoard() {
+    int bKingCount = 0;
+    int wKingCount = 0;
+    King *tmpBlackKing = nullptr;
+    King *tmpWhitekKing = nullptr;
+    for (auto row:theBoard) {
+        for (auto piece:row) {
+            if (piece->pieceType() == PieceType::KING) {
+                if (piece->getColor() == Color::BLACK) {
+                    bKingCount++;
+                    tmpBlackKing = dynamic_cast<King *>(piece);
+                } else {
+                    wKingCount++;
+                    tmpWhitekKing = dynamic_cast<King *>(piece);
+                }
+            }
+            if (piece->pieceType() == PieceType::PAWN && 
+                (piece->getRow() == 0 || piece->getRow() == 7)) {
+                    return false;
+            }
+        }
+    }
+    if (bKingCount != 1 || wKingCount != 1) return false;
+    blackKing = tmpBlackKing;
+    whiteKing = tmpWhitekKing;
+    return true;
+}
+
+void Board::updateWin() {
+    if (blackKing->getIsCaptured()) {
+        winner = Color::BLACK;
+    } else if (whiteKing->getIsCaptured()) {
+        winner = Color::WHITE;
+    } else {
+        winner = Color::NO_COLOR;
+    }
+}
+
 
 void Board::clearBoard() {
     for (int i = 0; i < theBoard.size(); ++i) {
@@ -116,6 +165,7 @@ bool Board::move(Piece *pieceToMove, int row, int col) {
     // if it is, we add the move to the stack ian the form [r1, c1, r2, c2]
     if (!pieceToMove) return false;
     vector<Move> moves = pieceToMove->getPossibleMoves(theBoard);
+    bool moved = false;
     for (Move m : moves) {
         if (m.r1 == row && m.c1 == col) {
             pieceToMove->setPosition(row, col);
@@ -130,10 +180,19 @@ bool Board::move(Piece *pieceToMove, int row, int col) {
             }
             // Move m = getPreviousMove();
             pieceToMove->notifyAllObservers(m);
+            moved = true;
+            break;
         }
     }
+    if (!moved) return false;
+    updateWin();
     return true;
     
+}
+
+bool Board::move(int r0, int c0, int r1, int c1) {
+    Piece *p = getPieceAt(r0, c0);
+    return move(p, r1, c1);
 }
 
 Piece* Board::getPieceAt(int row, int col) {

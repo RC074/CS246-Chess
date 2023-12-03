@@ -11,8 +11,9 @@ enum class Color { WHITE, BLACK, NO_COLOR };
 class Piece;
 struct Move {
     int r0, c0, r1, c1;
-    Piece *captures;
-    const Piece *p;
+    Piece *captures = nullptr;
+    const Piece *p = nullptr;
+    PieceType promotion = PieceType::NONE;
 };
 
 class Piece {
