@@ -1,4 +1,5 @@
 #include "king.h"
+struct Move;
 
 King::King(int row, int col, Color color):Piece{row, col, color} {}
 
@@ -6,8 +7,13 @@ King::~King() {
 }
 
 void King::notify(Piece &p) {
-    // Implement the logic to handle the notification from another piece
+    
 }
+
+SubscriptionType King::subType() {
+    return SubscriptionType::KingObserver;
+}
+
 
 PieceType King::pieceType() const {
     return PieceType::KING;
