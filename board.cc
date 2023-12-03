@@ -119,13 +119,18 @@ bool Board::validateBoard() {
     King *tmpWhitekKing = nullptr;
     for (auto row:theBoard) {
         for (auto piece:row) {
-            if (piece->pieceType() != PieceType::KING) continue;
-            if (piece->getColor() == Color::BLACK) {
-                bKingCount++;
-                tmpBlackKing = dynamic_cast<King *>(piece);
-            } else {
-                wKingCount++;
-                tmpWhitekKing = dynamic_cast<King *>(piece);
+            if (piece->pieceType() == PieceType::KING) {
+                if (piece->getColor() == Color::BLACK) {
+                    bKingCount++;
+                    tmpBlackKing = dynamic_cast<King *>(piece);
+                } else {
+                    wKingCount++;
+                    tmpWhitekKing = dynamic_cast<King *>(piece);
+                }
+            }
+            if (piece->pieceType() == PieceType::PAWN && 
+                (piece->getRow() == 0 || piece->getRow() == 7)) {
+                    return false;
             }
         }
     }
