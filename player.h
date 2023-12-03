@@ -11,7 +11,7 @@ class Player
     Color color;
 protected:
     Board *getBoard() const;
-    virtual Move getNextMove(istream &in) = 0;
+    virtual Move getNextMove(istream &in) const = 0;
 public:
     void setBoard(Board *b);
     void resign();

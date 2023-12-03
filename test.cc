@@ -6,13 +6,13 @@
 
 using namespace std;
 
-Level1 p1;
-Level1 p2;
+Level1 player1;
+Level2 player2;
 
 
 int main(int argc, char const *argv[]) {
   Board board {};
-  board.init(p1, p2);
+  board.init(player1, player2);
   cout << board << endl;
 
   Piece *p = board.getPieceAt(1, 4);
@@ -38,6 +38,17 @@ int main(int argc, char const *argv[]) {
   board.move(p, 2, 7);
   Piece *r2 = board.getPieceAt(7, 7);
   board.move(r2, 3, 7);
+  cout << "start" << endl;
+  board.move(0, 5, 5, 0);
   cout << board << endl;
-  p1.move(cin);
+  player2.move(cin);
+  cout << board << endl;
+  player1.move(cin);
+  cout << board << endl;
+  player2.move(cin);
+  cout << board << endl;
+  player1.move(cin);
+  cout << board << endl;
+  player2.move(cin);
+  cout << board << endl;
 }

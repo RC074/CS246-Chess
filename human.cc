@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Move Human::getNextMove(istream &in) {
+Move Human::getNextMove(istream &in) const {
     string s;
     vector<string> instruction;
     while (in>>s) {
