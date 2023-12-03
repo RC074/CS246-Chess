@@ -62,7 +62,6 @@ int main(int argc, char const *argv[]) {
                         continue;
                     }
 
-                    board.removePieceAt(row, col);
                     board.setPieceAt(pt, row, col, c);
                     cout << board << endl;
 
@@ -77,6 +76,7 @@ int main(int argc, char const *argv[]) {
                         cout << "Invalid remove piece position: [" << static_cast<char>(row) << "][" << static_cast<char>(col) << "]" << endl;
                         continue;
                     }
+                    board.removePieceAt(row, col);
                     cout << board << endl;
                 }
                 else if (cmd == "=") {
@@ -84,7 +84,10 @@ int main(int argc, char const *argv[]) {
                     cin >> color;
                     if (color == "black") turn = Color::BLACK;
                     else if (color == "white") turn = Color::WHITE;
-                    else cout << "Invalid color: " << color << endl;
+                    else {
+                        cout << "Invalid color: " << color << endl;
+                        continue;
+                    }
                 }
                 else if (cmd == "done") {
                     if (!board.validateBoard()) {
@@ -92,6 +95,7 @@ int main(int argc, char const *argv[]) {
                         continue;
                     }
                     useStandard = false;
+                    cout << "Leaving setup mode" << endl;
                     break;
                 }
                 else cout << "Invalid command: " << cmd << endl; // invalid command, still in setup mode
@@ -118,10 +122,75 @@ int main(int argc, char const *argv[]) {
                 else player2 = make_shared<Level4>();
 
                 board.init(*player1, *player2, useStandard);
-                
-                cout << board << endl;
+                cout << board << endl; // print the initialized board
 
                 // game HERE, MOVES HERE
+                while (true) {
+                    cin >> cmd;
+
+                    if (cmd == "move") {
+                        string pos1, pos2;
+                        cin >> pos1 >> pos2;
+
+                        cout << "Moving from " << pos1 << " to " << pos2 << endl;
+
+                        vector<int> pos1Vec = parsePos(pos1);
+                        vector<int> pos2Vec = parsePos(pos2);
+                        int r0 = pos1Vec[0];
+                        int c0 = pos1Vec[1];
+                        int r1 = pos2Vec[0];
+                        int c1 = pos2Vec[1];
+                        if (r0 < 0 || r0 > 7 || c0 < 0 || c0 > 7 || r1 < 0 || r1 > 7 || c1 < 0 || c1 > 7) {
+                            cout << "Invalid move action: [" << static_cast<char>(r0) << "][" << static_cast<char>(c0) << "] to [" << static_cast<char>(r1) << "][" << static_cast<char>(c1) << "]" << endl;
+                            continue;
+                        }
+
+                        // checking if the piece getting moved is the right color (the turn's color)
+                        if (board.getPieceAt(r0, c0)->getColor() != turn) {
+                            cout << "Cannot move opponent's piece / no piece exists" << endl;
+                            continue;
+                        }
+
+                        if (board.move(r0, c0, r1, c1)) {
+                            cout << "Move successful, new board:" << endl;
+                            cout << board << endl;
+
+                            Color winningColor = board.getWinner();
+                            if (winningColor != Color::NO_COLOR) {
+                                if (winningColor == Color::WHITE) cout << "Checkmate! White wins!" << endl;
+                                else cout << "Checkmate! Black wins!" << endl;
+                                break;
+                            }
+
+                            // CHECK FOR CHECK
+                            // if (board.getPlayerBlack()->isInCheck()) {
+                            //     cout << "Black is in check" << endl;
+                            // }
+                            // if (board.getPlayerWhite()->isInCheck()) {
+                            //     cout << "White is in check" << endl;
+                            // }
+                            
+                            // the opponent's turn now
+                            turn = (turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
+
+                        } else {
+                            cout << "Invalid move" << endl;
+                        }
+                    }
+                    else if (cmd == "undo") {
+                        board.undo();
+                        cout << "Undo successful, new board:" << endl;
+                        cout << board << endl;
+                    }
+                    else if (cmd == "resign") {
+                        if (turn == Color::WHITE) cout << "Black wins!" << endl;
+                        else cout << "White wins!" << endl;
+                        break;
+                    }
+                    else {
+                        cout << "Invalid command: " << cmd << endl;
+                    }
+                }
 
             } else {
                 cout << "Invalid players type: " << p1 << ", " << p2 << endl;
