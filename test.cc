@@ -125,56 +125,65 @@ int main(int argc, char const *argv[]) {
 
                 // game HERE, MOVES HERE
                 while (true) {
+                    Player &p = (turn == Color::WHITE) ? *player1 : *player2;
                     cin >> cmd;
 
                     if (cmd == "move") {
-                        string pos1, pos2;
-                        cin >> pos1 >> pos2;
-
-                        cout << "Moving from " << pos1 << " to " << pos2 << endl;
-
-                        vector<int> pos1Vec = parsePos(pos1);
-                        vector<int> pos2Vec = parsePos(pos2);
-                        int r0 = pos1Vec[0];
-                        int c0 = pos1Vec[1];
-                        int r1 = pos2Vec[0];
-                        int c1 = pos2Vec[1];
-                        if (r0 < 0 || r0 > 7 || c0 < 0 || c0 > 7 || r1 < 0 || r1 > 7 || c1 < 0 || c1 > 7) {
-                            cout << "Invalid move action: [" << static_cast<char>(r0) << "][" << static_cast<char>(c0) << "] to [" << static_cast<char>(r1) << "][" << static_cast<char>(c1) << "]" << endl;
+                        if (!p.move(cin)) {
+                            cout << "invalid" << endl;
                             continue;
                         }
+                        cout << board << endl;
+                        
+                        // string pos1, pos2;
+                        // cin >> pos1 >> pos2;
 
-                        // checking if the piece getting moved is the right color (the turn's color)
-                        if (board.getPieceAt(r0, c0)->getColor() != turn) {
-                            cout << "Cannot move opponent's piece / no piece exists" << endl;
-                            continue;
-                        }
+                        // cout << "Moving from " << pos1 << " to " << pos2 << endl;
 
-                        if (board.move(r0, c0, r1, c1)) {
-                            cout << "Move successful, new board:" << endl;
-                            cout << board << endl;
+                        // vector<int> pos1Vec = parsePos(pos1);
+                        // vector<int> pos2Vec = parsePos(pos2);
+                        // int r0 = pos1Vec[0];
+                        // int c0 = pos1Vec[1];
+                        // int r1 = pos2Vec[0];
+                        // int c1 = pos2Vec[1];
+                        // if (r0 < 0 || r0 > 7 || c0 < 0 || c0 > 7 || r1 < 0 || r1 > 7 || c1 < 0 || c1 > 7) {
+                        //     cout << "Invalid move action: [" << static_cast<char>(r0) << "][" << static_cast<char>(c0) << "] to [" << static_cast<char>(r1) << "][" << static_cast<char>(c1) << "]" << endl;
+                        //     continue;
+                        // }
 
-                            Color winningColor = board.getWinner();
-                            if (winningColor != Color::NO_COLOR) {
-                                if (winningColor == Color::WHITE) cout << "Checkmate! White wins!" << endl;
-                                else cout << "Checkmate! Black wins!" << endl;
-                                break;
-                            }
+                        // // checking if the piece getting moved is the right color (the turn's color)
+                        // if (board.getPieceAt(r0, c0)->getColor() != turn) {
+                        //     cout << "Cannot move opponent's piece / no piece exists" << endl;
+                        //     continue;
+                        // }
 
-                            // CHECK FOR CHECK
-                            // if (board.getPlayerBlack()->isInCheck()) {
-                            //     cout << "Black is in check" << endl;
-                            // }
-                            // if (board.getPlayerWhite()->isInCheck()) {
-                            //     cout << "White is in check" << endl;
-                            // }
+                        // if (board.move(r0, c0, r1, c1)) {
+                        //     cout << "Move successful, new board:" << endl;
+                        //     cout << board << endl;
+
+                        //     Color winningColor = board.getWinner();
+                        //     if (winningColor != Color::NO_COLOR) {
+                        //         if (winningColor == Color::WHITE) cout << "Checkmate! White wins!" << endl;
+                        //         else cout << "Checkmate! Black wins!" << endl;
+                        //         break;
+                        //     }
+
+                        //     // CHECK FOR CHECK
+                        //     // if (board.getPlayerBlack()->isInCheck()) {
+                        //     //     cout << "Black is in check" << endl;
+                        //     // }
+                        //     // if (board.getPlayerWhite()->isInCheck()) {
+                        //     //     cout << "White is in check" << endl;
+                        //     // }
                             
-                            // the opponent's turn now
-                            turn = (turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
+                        //     // the opponent's turn now
+                        //     turn = (turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
 
-                        } else {
-                            cout << "Invalid move" << endl;
-                        }
+
+                        // } else {
+                        //     cout << "Invalid move" << endl;
+                        // }
+
                     }
                     else if (cmd == "undo") {
                         board.undo();
@@ -189,6 +198,7 @@ int main(int argc, char const *argv[]) {
                     else {
                         cout << "Invalid command: " << cmd << endl;
                     }
+                    turn = (turn == Color::BLACK) ? Color::WHITE : Color::BLACK;
                 }
 
             } else {
