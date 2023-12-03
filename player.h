@@ -13,6 +13,7 @@ protected:
     Board *getBoard() const;
     virtual Move getNextMove(istream &in) = 0;
 public:
+    void setBoard(Board *b);
     void resign();
     bool move(istream &instruction); // some player needs input
     void setColor(Color c);

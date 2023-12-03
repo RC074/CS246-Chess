@@ -39,4 +39,5 @@ int main(int argc, char const *argv[]) {
   Piece *r2 = board.getPieceAt(7, 7);
   board.move(r2, 3, 7);
   cout << board << endl;
+  p1.move(cin);
 }

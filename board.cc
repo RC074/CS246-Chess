@@ -89,6 +89,8 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
     clearBoard();
 
     // the board is filled with nullptr now
+    blackPlayer.setBoard(this);
+    whitePlayer.setBoard(this);
     this->blackPlayer = &blackPlayer;
     this->whitePlayer = &whitePlayer;
     blackPlayer.setColor(Color::BLACK);
