@@ -5,6 +5,7 @@ PlayerType Computer::playerType() const {
 }
 
 Move Computer::getNextMove(istream &in) const {
+    vector<vector<bool>> threat = getThreatBoard();
     Move bestMove = {0, 0, 0, 0};
     int bestScore = -1;
     auto board = getBoard()->getBoard();
@@ -12,8 +13,10 @@ Move Computer::getNextMove(istream &in) const {
         for (auto piece:row) {
             if (!piece || piece->getColor() != getColor()) continue;
             auto moves = piece->getPossibleMoves(board);
+            int r = piece->getRow();
+            int c = piece->getCol();
             for (auto move:moves) {
-                int score = rankMove(move);
+                int score = rankMove(move, threat);
                 if (score > bestScore) {
                     bestScore = score;
                     bestMove = move;
@@ -40,12 +43,12 @@ vector<vector<bool>> Computer::getThreatBoard() const {
     return threat;
 }
 
-int Level1::rankMove(const Move &move) const {
+int Level1::rankMove(const Move &move, BoolBoard &threat) const {
     return getColor() == Color::BLACK? move.r1 : 7-move.r1;
 }
 
 
-int Level2::rankMove(const Move &move) const {
+int Level2::rankMove(const Move &move, BoolBoard &threat) const {
     if (move.captures) {
         if (move.captures->pieceType() == PieceType::KING) return 9;
         return 8;
@@ -53,10 +56,16 @@ int Level2::rankMove(const Move &move) const {
     return getColor() == Color::BLACK? move.r1 : 7-move.r1;
 }
 
-int Level3::rankMove(const Move &m) const {
-
+int Level3::rankMove(const Move &move, BoolBoard &threat) const {
+    if (threat[move.r1][move.c1]) return 0;
+    if (threat[move.r0][move.c0]) return 11;
+    if (move.captures) {
+        if (move.captures->pieceType() == PieceType::KING) return 10;
+        return 9;
+    }
+    return getColor() == Color::BLACK? move.r1 + 1 : 8-move.r1;
 }
 
-int Level4::rankMove(const Move &m) const {
+int Level4::rankMove(const Move &move, BoolBoard &threat) const {
 
 }

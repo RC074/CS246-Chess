@@ -5,6 +5,7 @@
 #include "textdisplay.h"
 #include "human.h"
 #include "computer.h"
+#include "readable.h"
 #include <sstream>
 
 using namespace std;
@@ -12,18 +13,6 @@ using namespace std;
 // Level1 p1;
 // Level1 p2;
 // computer[1-4]
-
-PieceType charToPiece(char c) {
-    int currChar = static_cast<int>(c);
-    if (currChar >= 97) currChar -= 32;
-    if (c == 'K') return PieceType::KING;
-    else if (c == 'Q') return PieceType::QUEEN;
-    else if (c == 'B') return PieceType::BISHOP;
-    else if (c == 'N') return PieceType::KNIGHT;
-    else if (c == 'R') return PieceType::ROOK;
-    else if (c == 'P') return PieceType::PAWN;
-    else return PieceType::NONE;
-}
 
 vector<int> parsePos(string pos) {
     stringstream iss {pos};
@@ -67,7 +56,7 @@ int main(int argc, char const *argv[]) {
                     if (pieceInt >= 97) c = Color::BLACK;
                     else c = Color::WHITE;
                     
-                    PieceType pt = charToPiece(piece);
+                    PieceType pt = getPieceType(piece);
                     if (pt == PieceType::NONE) {
                         cout << "Invalid piece" << endl;
                         continue;
@@ -75,6 +64,7 @@ int main(int argc, char const *argv[]) {
 
                     board.removePieceAt(row, col);
                     board.setPieceAt(pt, row, col, c);
+                    cout << board << endl;
 
                 } // "+" adding piece
                 else if (cmd == "-") {
@@ -87,6 +77,7 @@ int main(int argc, char const *argv[]) {
                         cout << "Invalid remove piece position: [" << static_cast<char>(row) << "][" << static_cast<char>(col) << "]" << endl;
                         continue;
                     }
+                    cout << board << endl;
                 }
                 else if (cmd == "=") {
                     string color;
@@ -96,6 +87,10 @@ int main(int argc, char const *argv[]) {
                     else cout << "Invalid color: " << color << endl;
                 }
                 else if (cmd == "done") {
+                    if (!board.validateBoard()) {
+                        cout << "incorrect setup" << endl;
+                        continue;
+                    }
                     useStandard = false;
                     break;
                 }
@@ -123,6 +118,8 @@ int main(int argc, char const *argv[]) {
                 else player2 = make_shared<Level4>();
 
                 board.init(*player1, *player2, useStandard);
+                
+                cout << board << endl;
 
                 // game HERE, MOVES HERE
 

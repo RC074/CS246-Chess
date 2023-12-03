@@ -75,7 +75,9 @@ Piece *defaultConstructPiece(int row, int col) {
 Board::Board(): 
     theBoard{vector<Row>(BOARD_SIZE, Row(BOARD_SIZE, nullptr))},
     td{new TextDisplay{BOARD_SIZE}}, 
-    winner{Color::NO_COLOR} {}
+    winner{Color::NO_COLOR} {
+        
+    }
 
 Board::~Board() {
     clearBoard();
@@ -120,6 +122,7 @@ bool Board::validateBoard() {
     King *tmpWhitekKing = nullptr;
     for (auto row:theBoard) {
         for (auto piece:row) {
+            if (!piece) continue;
             if (piece->pieceType() == PieceType::KING) {
                 if (piece->getColor() == Color::BLACK) {
                     bKingCount++;
