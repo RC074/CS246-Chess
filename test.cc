@@ -34,6 +34,7 @@ int main(int argc, char const *argv[]) {
         cin >> cmd;
 
         if (cmd == "setup") {
+            cout << "entering setup mode" << endl;
 
             while (true) {
                 cin >> cmd;
@@ -47,7 +48,7 @@ int main(int argc, char const *argv[]) {
                     int row = posVec[0];
                     int col = posVec[1];
                     if (row < 0 || row > 7 || col < 0 || col > 7) {
-                        cout << "Invalid add piece position [" << static_cast<char>(row) << "][" << static_cast<char>(col) << "]" << endl;
+                        cout << "Invalid add piece position: " << pos << endl;
                         continue;
                     }
                     
@@ -72,7 +73,7 @@ int main(int argc, char const *argv[]) {
                     int row = posVec[0];
                     int col = posVec[1];
                     if (row < 0 || row > 7 || col < 0 || col > 7) {
-                        cout << "Invalid remove piece position: [" << static_cast<char>(row) << "][" << static_cast<char>(col) << "]" << endl;
+                        cout << "Invalid remove piece position: " << pos << endl;
                         continue;
                     }
                     board.removePieceAt(row, col);
@@ -140,7 +141,7 @@ int main(int argc, char const *argv[]) {
                         int r1 = pos2Vec[0];
                         int c1 = pos2Vec[1];
                         if (r0 < 0 || r0 > 7 || c0 < 0 || c0 > 7 || r1 < 0 || r1 > 7 || c1 < 0 || c1 > 7) {
-                            cout << "Invalid move action: [" << static_cast<char>(r0) << "][" << static_cast<char>(c0) << "] to [" << static_cast<char>(r1) << "][" << static_cast<char>(c1) << "]" << endl;
+                            cout << "Invalid move action: " << pos1 << " to " << pos2 << endl;
                             continue;
                         }
 
@@ -168,7 +169,7 @@ int main(int argc, char const *argv[]) {
                             // if (board.getPlayerWhite()->isInCheck()) {
                             //     cout << "White is in check" << endl;
                             // }
-                            
+
                             // the opponent's turn now
                             turn = (turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
 
@@ -197,6 +198,9 @@ int main(int argc, char const *argv[]) {
             }
 
         } // if "game"
+        else {
+            cout << "Invalid command: " << cmd << endl;
+        }
         
     } // while
 
