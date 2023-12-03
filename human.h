@@ -6,6 +6,8 @@
 class Human: public Player {
 protected:
     Move getNextMove() override;
+public:
+    PlayerType playerType() const override;
 };
 
 #endif

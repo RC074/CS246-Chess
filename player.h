@@ -4,6 +4,9 @@
 #include "piece.h"
 
 class Board;
+
+enum PlayerType {HUMAN, COMPUTER};
+
 class Player
 {
     Board *b;
@@ -15,6 +18,7 @@ public:
     void move();
     void setColor(Color c);
     Color getColor();
+    virtual PlayerType playerType() const;
 };
 
 #endif
