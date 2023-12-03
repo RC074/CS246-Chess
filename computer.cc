@@ -16,6 +16,9 @@ Move Computer::getNextMove(istream &in) const {
             int r = piece->getRow();
             int c = piece->getCol();
             for (auto move:moves) {
+                if (move.r1 < 0 || move.r1 > 8 || move.c1 < 0 || move.c1 > 8) {
+                    continue;
+                }
                 int score = rankMove(move, threat);
                 if (score > bestScore) {
                     bestScore = score;
