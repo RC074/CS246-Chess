@@ -9,6 +9,7 @@ void Board::removePieceAt(int row, int col) {
     if (!theBoard[row][col]) return;
     delete theBoard[row][col];
     theBoard[row][col] = nullptr;
+    td->notify(Move{row, col, row, col, nullptr, nullptr});
 }
 
 // struct Move {
@@ -81,7 +82,11 @@ Board::Board():
     theBoard{vector<Row>(BOARD_SIZE, Row(BOARD_SIZE, nullptr))},
     td{new TextDisplay{BOARD_SIZE}}, 
     winner{Color::NO_COLOR} {
-        
+        for (int row = 0; row < theBoard.size(); ++row) {
+            for (int col = 0; col < theBoard[row].size(); ++col) {
+                td->notify(Move{row, col, row, col, nullptr, nullptr});
+            }
+        }
     }
 
 Board::~Board() {
@@ -146,6 +151,11 @@ bool Board::validateBoard() {
     if (bKingCount != 1 || wKingCount != 1) return false;
     blackKing = tmpBlackKing;
     whiteKing = tmpWhitekKing;
+    if (inCheck(Color::BLACK) || inCheck(Color::WHITE)) {
+        blackKing = nullptr;
+        whiteKing = nullptr;
+        return false;
+    };
     return true;
 }
 
