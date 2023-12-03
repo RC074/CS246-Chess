@@ -1,5 +1,9 @@
 #include "computer.h"
 
+PlayerType Computer::playerType() const {
+    return PlayerType::COMPUTER;
+}
+
 Move Computer::getNextMove(istream &in) const {
     Move bestMove = {0, 0, 0, 0};
     int bestScore = -1;
@@ -47,4 +51,12 @@ int Level2::rankMove(const Move &move) const {
         return 8;
     }
     return getColor() == Color::BLACK? move.r1 : 7-move.r1;
+}
+
+int Level3::rankMove(const Move &m) const {
+
+}
+
+int Level4::rankMove(const Move &m) const {
+
 }

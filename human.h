@@ -6,6 +6,8 @@
 class Human: public Player {
 protected:
     Move getNextMove(istream &in) const override;
+public:
+    PlayerType playerType() const override;
 };
 
 #endif

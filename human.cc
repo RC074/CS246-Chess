@@ -26,3 +26,7 @@ Move Human::getNextMove(istream &in) const {
     }
     return move;
 }
+
+PlayerType Human::playerType() const {
+    return PlayerType::HUMAN;
+}

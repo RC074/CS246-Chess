@@ -5,6 +5,9 @@
 using namespace std;
 
 class Board;
+
+enum PlayerType {HUMAN, COMPUTER};
+
 class Player
 {
     Board *b;
@@ -18,6 +21,7 @@ public:
     bool move(istream &instruction); // some player needs input
     void setColor(Color c);
     Color getColor() const;
+    virtual PlayerType playerType() const = 0;
 };
 
 #endif

@@ -19,9 +19,8 @@ void Board::removePieceAt(int row, int col) {
 
 void Board::setPieceAt(PieceType pt, int row, int col, Color c) {
     Piece *newPiece;
-    if (pt == PieceType::KING) {
-        newPiece = new King {row, col, c};
-    }
+    
+    if (pt == PieceType::KING) newPiece = new King {row, col, c};
     else if (pt == PieceType::BISHOP) newPiece = new Bishop {row, col, c};
     else if (pt == PieceType::KNIGHT) newPiece = new Knight {row, col, c};
     else if (pt == PieceType::PAWN) newPiece = new Pawn {row, col, c};
