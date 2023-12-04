@@ -2,6 +2,7 @@
 #define _GRAPHICSDISPLAY_H_
 #include "observer.h"
 #include "window.h"
+#include "piece.h"
 
 class GraphicsDisplay: public Observer {
     const int gridSize = 8;
@@ -11,7 +12,7 @@ class GraphicsDisplay: public Observer {
   public:
     GraphicsDisplay(int n, Xwindow &w);
     char pieceToChar(Piece *p);
-    void notify(Cell &c) override; 
+    void notify(Move m) override; 
     SubscriptionType subType() override;
     ~GraphicsDisplay();;
 };

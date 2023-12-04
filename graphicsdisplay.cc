@@ -29,7 +29,7 @@ char GraphicsDisplay::pieceToChar(Piece *p) {
 }
 
 // notifies to update the graphics
-void GraphicsDisplay::notify(Move &m) {
+void GraphicsDisplay::notify(Move m) {
     int oldr = m.r0;
     int oldc = m.c0;
     int newr = m.r1;
@@ -39,9 +39,9 @@ void GraphicsDisplay::notify(Move &m) {
     int y = oldr * cellWH;
 
     if ((oldr % 2 == 1 && oldc % 2 == 1) || (oldr % 2 == 0 && oldc % 2 == 0)) {
-        window.fillRectangle(x, y, cellWH, cellWH, Xwindow::White)
+        window.fillRectangle(x, y, cellWH, cellWH, Xwindow::White);
     } else {
-        window.fillRectangle(x, y, cellWH, cellWH, Xwindow::Black)
+        window.fillRectangle(x, y, cellWH, cellWH, Xwindow::Black);
     }
 
     x = newc * cellWH;
@@ -49,7 +49,8 @@ void GraphicsDisplay::notify(Move &m) {
 
     if (m.p) {
         char pieceChar = pieceToChar(const_cast<Piece*>(m.p));
-        window.drawString(x, y, pieceChar);
+        std::string pieceStr(1, pieceChar);
+        window.drawString(x, y, pieceStr);
     }
 }
 

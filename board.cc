@@ -82,7 +82,7 @@ Piece *defaultConstructPiece(int row, int col) {
 
 Board::Board(Xwindow &window): 
     theBoard{vector<Row>(BOARD_SIZE, Row(BOARD_SIZE, nullptr))},
-    td{new TextDisplay{BOARD_SIZE}}, gd{new GraphicsDisplay{BOARD_SIZE}}, window{window},
+    td{new TextDisplay{BOARD_SIZE}}, gd{new GraphicsDisplay{BOARD_SIZE, window}}, window{window},
     winner{Color::NO_COLOR} {
         for (int row = 0; row < theBoard.size(); ++row) {
             for (int col = 0; col < theBoard[row].size(); ++col) {
