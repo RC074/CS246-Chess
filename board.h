@@ -52,6 +52,7 @@ public:
     vector<vector<bool>> getDangerZone(Color opponentColor) const;
     bool inCheck(Color color);
     bool checkMate(Color color);
+    bool staleMate(Color color);
     void promotePawn(Piece *&pieceToMove, int row, int col, PieceType promotion);
     Move getPreviousMove();
     Player *getPlayerBlack();

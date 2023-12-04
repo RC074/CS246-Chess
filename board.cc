@@ -256,8 +256,7 @@ bool Board::inCheck(Color color) {
     return true;
 }
 
-bool Board::checkMate(Color color) {
-    // if (!inCheck(color)) return false;
+bool Board::staleMate(Color color) {
     Piece *kingToCheck = color == Color::BLACK ? blackKing : whiteKing;
     vector<vector<bool>> dangerZone = color == Color::BLACK ? whiteDangerZone : blackDangerZone; 
     for (int row = 0; row < theBoard.size(); ++row) {
@@ -287,6 +286,11 @@ bool Board::checkMate(Color color) {
     }
     return true;
 }
+
+bool Board::checkMate(Color color) {
+    return inCheck(color) && staleMate(color);
+}
+
 
 bool Board::leadsToCheck(Move m) {
     Piece * p = const_cast<Piece *>(m.p);
@@ -341,7 +345,7 @@ bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
             }
 
             // Move m = getPreviousMove();
-            pieceToMove->notifyAllObservers(m);
+            pieceToMove->notifyAllObservers(Move{m.r0, m.c0, m.r1, m.c1, m.captures, pieceToMove});
             moved = true;
             break;
         }
@@ -364,6 +368,12 @@ void Board::promotePawn(Piece *&pieceToMove, int row, int col, PieceType promoti
             break;
         case PieceType::ROOK:
             promotedPiece = new Rook{row, col, pieceColor};
+            break;
+        case PieceType::KNIGHT:
+            promotedPiece = new Knight{row, col, pieceColor};
+            break;
+        case PieceType::BISHOP:
+            promotedPiece = new Bishop{row, col, pieceColor};
             break;
         // Add cases for other piece types as needed
         default:
