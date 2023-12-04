@@ -29,7 +29,6 @@ int Piece::getCol() const {
 void Piece::setPosition(int r, int c) {
   this->row = r;
   this->col = c;
-  setMoved();
 }
 
 void Piece::setIsCaptured(bool t) {

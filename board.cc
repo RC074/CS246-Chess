@@ -117,11 +117,13 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
     this->whitePlayer = &whitePlayer;
     blackPlayer.setColor(Color::BLACK);
     whitePlayer.setColor(Color::WHITE);
-    if (!useStandard) return;
     delete td;
     delete gd;
     td = new TextDisplay(BOARD_SIZE);
     gd = new GraphicsDisplay(BOARD_SIZE, window);
+    updateDangerZone(Color::BLACK);
+    updateDangerZone(Color::WHITE);
+    if (!useStandard) return;
     for (int row = 0; row < theBoard.size(); ++row) {
         for (int col = 0; col < theBoard[row].size(); ++col) {
             auto newPiece = defaultConstructPiece(row, col);
@@ -140,8 +142,6 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
             
         }
     }
-    updateDangerZone(Color::BLACK);
-    updateDangerZone(Color::WHITE);
 }
 
 vector<vector<bool>> Board::getDangerZone(Color color) const {
@@ -239,6 +239,7 @@ bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
         }
     }
     if (!moved) return false;
+    pieceToMove->setMoved();
     updateDangerZone(Color::BLACK);
     updateDangerZone(Color::WHITE);
     updateWin();
