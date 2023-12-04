@@ -43,6 +43,7 @@ public:
     bool validateBoard(); // use at the end of setup
     bool move(int r0, int c0, int r1, int c1, PieceType promotion);
     bool move(Piece *pieceToMove, int row, int col, PieceType promotion);
+    bool leadsToCheck(Move m); // computer use only
     Piece* getPieceAt(int row, int col);
     vector<vector<Piece*>> getBoard();
     Color getWinner();

@@ -266,6 +266,21 @@ bool Board::checkMate(Color color) {
     return true;
 }
 
+bool Board::leadsToCheck(Move m) {
+    Piece * p = const_cast<Piece *>(m.p);
+    p->setPosition(m.r1, m.c1);
+    theBoard[m.r0][m.c0] = nullptr;
+    theBoard[m.r1][m.c1] = p;
+    bool result = false;
+    if (inCheck(p->getColor())) {
+        result = true;
+    }
+    theBoard[m.r0][m.c0] = p;
+    p->setPosition(m.r0, m.c0);
+    theBoard[m.r1][m.c1] = m.captures;
+    return result;
+}
+
 bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
     // we check if the move is a valid move
     // if it is, we add the move to the stack ian the form [r1, c1, r2, c2]
