@@ -256,7 +256,7 @@ bool Board::inCheck(Color color) {
     return true;
 }
 
-bool Board::staleMate(Color color) {
+bool Board::noLegalMoves(Color color) {
     Piece *kingToCheck = color == Color::BLACK ? blackKing : whiteKing;
     vector<vector<bool>> dangerZone = color == Color::BLACK ? whiteDangerZone : blackDangerZone; 
     for (int row = 0; row < theBoard.size(); ++row) {
@@ -287,8 +287,12 @@ bool Board::staleMate(Color color) {
     return true;
 }
 
+bool Board::staleMate(Color color) {
+    return !inCheck(color) && noLegalMoves(color);
+}
+
 bool Board::checkMate(Color color) {
-    return inCheck(color) && staleMate(color);
+    return inCheck(color) && noLegalMoves(color);
 }
 
 

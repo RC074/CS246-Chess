@@ -33,6 +33,7 @@ class Board{
     void updateWin(); // called at each move
     vector<vector<bool>> whiteDangerZone;
     vector<vector<bool>> blackDangerZone;
+    bool noLegalMoves(Color color);
 public:
     Board(Xwindow &window);
     ~Board();
