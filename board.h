@@ -9,6 +9,7 @@
 #include "knight.h"
 #include "rook.h"
 #include "pawn.h"
+#include "graphicsdisplay.h"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ using namespace std;
 const int BOARD_SIZE = 8;
 class Player;
 class TextDisplay;
+class GraphicsDisplay;
 class King;
 class Board{
     Player *blackPlayer, *whitePlayer;
@@ -26,11 +28,13 @@ class Board{
     Color winner;
     vector<Move> history;
     TextDisplay *td;
+    GraphicsDisplay *gd;
+    Xwindow &window;
     void updateWin(); // called at each move
     vector<vector<bool>> whiteDangerZone;
     vector<vector<bool>> blackDangerZone;
 public:
-    Board();
+    Board(Xwindow &window);
     ~Board();
     void init(Player &blackPlayer, Player &WhitePlayer, 
               bool useStandard = true);

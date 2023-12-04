@@ -6,6 +6,7 @@
 #include "human.h"
 #include "readable.h"
 #include <sstream>
+#include "window.h"
 
 using namespace std;
 
@@ -26,7 +27,7 @@ vector<int> parsePos(string pos) {
 int main(int argc, char const *argv[]) {
     bool useStandard = true;
     string cmd, p1, p2;
-    // Xwindow zw;
+    Xwindow window;
     Board board {};
     Color turn = Color::WHITE;
 

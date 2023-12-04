@@ -10,6 +10,7 @@ void Board::removePieceAt(int row, int col) {
     delete theBoard[row][col];
     theBoard[row][col] = nullptr;
     td->notify(Move{row, col, row, col, nullptr, nullptr});
+    gd->notify(Move{row, col, row, col, nullptr, nullptr});
 }
 
 // struct Move {
@@ -33,6 +34,7 @@ void Board::setPieceAt(PieceType pt, int row, int col, Color c) {
     else return;
 
     td->notify(Move{row, col, row, col, newPiece, newPiece});
+    gd->notify(Move{row, col, row, col, newPiece, newPiece});
     
     // put piece into the board
     removePieceAt(row, col);
@@ -78,13 +80,14 @@ Piece *defaultConstructPiece(int row, int col) {
     }
 }
 
-Board::Board(): 
+Board::Board(Xwindow &window): 
     theBoard{vector<Row>(BOARD_SIZE, Row(BOARD_SIZE, nullptr))},
-    td{new TextDisplay{BOARD_SIZE}}, 
+    td{new TextDisplay{BOARD_SIZE}}, gd{new GraphicsDisplay{BOARD_SIZE}}, window{window},
     winner{Color::NO_COLOR} {
         for (int row = 0; row < theBoard.size(); ++row) {
             for (int col = 0; col < theBoard[row].size(); ++col) {
                 td->notify(Move{row, col, row, col, nullptr, nullptr});
+                gd->notify(Move{row, col, row, col, nullptr, nullptr});
             }
         }
     }
@@ -92,7 +95,9 @@ Board::Board():
 Board::~Board() {
     clearBoard();
     delete td;
+    delete gd;
     td = nullptr;
+    gd = nullptr;
 }
 
 void Board::init(Player &blackPlayer, Player &whitePlayer, 
@@ -108,7 +113,9 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
     whitePlayer.setColor(Color::WHITE);
     if (!useStandard) return;
     delete td;
+    delete gd;
     td = new TextDisplay(BOARD_SIZE);
+    gd = new GraphicsDisplay(BOARD_SIZE, window);
     for (int row = 0; row < theBoard.size(); ++row) {
         for (int col = 0; col < theBoard[row].size(); ++col) {
             auto newPiece = defaultConstructPiece(row, col);
@@ -119,7 +126,12 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
             }
             theBoard[row][col] = newPiece;
             td->notify(Move{row, col, row, col, nullptr, theBoard[row][col]});
-            if (theBoard[row][col]) theBoard[row][col]->attach(td);
+            gd->notify(Move{row, col, row, col, nullptr, theBoard[row][col]});
+            if (theBoard[row][col]) {
+                theBoard[row][col]->attach(td);
+                theBoard[row][col]->attach(gd);
+            }
+            
         }
     }
 }
