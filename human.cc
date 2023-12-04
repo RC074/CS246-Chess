@@ -6,8 +6,11 @@ using namespace std;
 
 Move Human::getNextMove(istream &in) const {
     string s;
+    string line;
+    getline(in, line);
+    istringstream iss {line};
     vector<string> instruction;
-    while (in>>s) {
+    while (iss>>s) {
         instruction.emplace_back(s);
     }
     if (instruction.size() != 2 && instruction.size() != 3) 
