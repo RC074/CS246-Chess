@@ -51,7 +51,7 @@ void GraphicsDisplay::notify(Move m) {
         char pieceChar = pieceToChar(const_cast<Piece*>(m.p));
         std::string pieceStr(1, pieceChar);
         std::string font = "-b&h-lucidatypewriter-bold-r-normal-sans-20-140-100-100-m-120-iso8859-10";
-        window.drawString(x+25, y+30, pieceStr, Xwindow::Blue, font);
+        window.drawString(x+22, y+31, pieceStr, Xwindow::Blue, font);
         // window.drawString(x, y, pieceStr);
     }
 }

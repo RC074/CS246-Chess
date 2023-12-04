@@ -47,10 +47,11 @@ public:
     vector<vector<Piece*>> getBoard();
     Color getWinner();
     void undo();
-    void updateDangerZone(Color color);
+    void updateDangerZone(Color opponentColor);
+    vector<vector<bool>> getDangerZone(Color opponentColor) const;
     bool inCheck(Color color);
     bool checkMate(Color color);
-    void Board::promotePawn(Piece *&pieceToMove, int row, int col, PieceType promotion);
+    void promotePawn(Piece *&pieceToMove, int row, int col, PieceType promotion);
     Move getPreviousMove();
     Player *getPlayerBlack();
     Player *getPlayerWhite();

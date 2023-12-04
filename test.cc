@@ -141,8 +141,6 @@ int main(int argc, char const *argv[]) {
                             }
                             cout << board << endl;
 
-                            if (board.promote)
-
                         }
                         else if (cmd == "undo") {
                             board.undo();

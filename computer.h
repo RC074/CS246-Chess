@@ -6,7 +6,6 @@ using BoolBoard = vector<vector<bool>>;
 
 class Computer: public Player {
 protected:
-    vector<vector<bool>> getThreatBoard() const;
     Move getNextMove(istream &in) const override;
     virtual int rankMove(const Move &m, BoolBoard &threat) const = 0;
 public:

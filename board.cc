@@ -11,6 +11,8 @@ void Board::removePieceAt(int row, int col) {
     theBoard[row][col] = nullptr;
     td->notify(Move{row, col, row, col, nullptr, nullptr});
     gd->notify(Move{row, col, row, col, nullptr, nullptr});
+    updateDangerZone(Color::BLACK);
+    updateDangerZone(Color::WHITE);
 }
 
 // struct Move {
@@ -80,12 +82,14 @@ Piece *defaultConstructPiece(int row, int col) {
     if (loc == Point{0,4} || loc == Point{7,4}) {
         return new King {row, col, color};
     }
+    return nullptr;
 }
 
 Board::Board(Xwindow &window): 
     theBoard{vector<Row>(BOARD_SIZE, Row(BOARD_SIZE, nullptr))},
     td{new TextDisplay{BOARD_SIZE}}, gd{new GraphicsDisplay{BOARD_SIZE, window}}, window{window},
-    winner{Color::NO_COLOR} {
+    winner{Color::NO_COLOR}, whiteDangerZone{vector<vector<bool>>(8, vector<bool>(8, true))}, 
+    blackDangerZone{vector<vector<bool>>(8, vector<bool>(8, true))} {
         for (int row = 0; row < theBoard.size(); ++row) {
             for (int col = 0; col < theBoard[row].size(); ++col) {
                 td->notify(Move{row, col, row, col, nullptr, nullptr});
@@ -136,6 +140,13 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
             
         }
     }
+    updateDangerZone(Color::BLACK);
+    updateDangerZone(Color::WHITE);
+}
+
+vector<vector<bool>> Board::getDangerZone(Color color) const {
+    if (color == Color::NO_COLOR) return {};
+    return (color == Color::WHITE) ? whiteDangerZone : blackDangerZone;
 }
 
 
@@ -165,6 +176,8 @@ bool Board::validateBoard() {
     if (bKingCount != 1 || wKingCount != 1) return false;
     blackKing = tmpBlackKing;
     whiteKing = tmpWhitekKing;
+    updateDangerZone(Color::BLACK);
+    updateDangerZone(Color::WHITE);
     if (inCheck(Color::BLACK) || inCheck(Color::WHITE)) {
         blackKing = nullptr;
         whiteKing = nullptr;
@@ -226,6 +239,8 @@ bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
         }
     }
     if (!moved) return false;
+    updateDangerZone(Color::BLACK);
+    updateDangerZone(Color::WHITE);
     updateWin();
     return true;
     
@@ -321,8 +336,8 @@ void Board::updateDangerZone(Color color) {
 }
 
 bool Board::inCheck(Color color) {
-    Piece *kingToCheck = color == Color::BLACK ? blackKing : whiteKing;
-    vector<vector<bool>> dangerZone = color == Color::BLACK ? whiteDangerZone : blackDangerZone; 
+    Piece *kingToCheck = (color == Color::BLACK) ? blackKing : whiteKing;
+    vector<vector<bool>> &dangerZone = (color == Color::BLACK) ? whiteDangerZone : blackDangerZone; 
     if (!blackKing || !whiteKing) return false;
     if (dangerZone[kingToCheck->getRow()][kingToCheck->getCol()]) {
         return false;
