@@ -40,6 +40,8 @@ void Board::setPieceAt(PieceType pt, int row, int col, Color c) {
     // put piece into the board
     removePieceAt(row, col);
     theBoard[row][col] = newPiece;
+    newPiece->attach(td);
+    newPiece->attach(gd);
 
     td->notify(Move{row, col, row, col, newPiece, newPiece});
     gd->notify(Move{row, col, row, col, newPiece, newPiece});
@@ -108,7 +110,7 @@ Board::~Board() {
 
 void Board::init(Player &blackPlayer, Player &whitePlayer, 
                  bool useStandard, bool graphicOn) {
-    clearBoard();
+    if (useStandard) clearBoard();
 
     // the board is filled with nullptr now
     blackPlayer.setBoard(this);
@@ -123,7 +125,15 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
     gd = new GraphicsDisplay(BOARD_SIZE, window);
     updateDangerZone(Color::BLACK);
     updateDangerZone(Color::WHITE);
-    if (!useStandard) return;
+    if (!useStandard) {
+        for (int row = 0; row < theBoard.size(); ++row) {
+            for (int col = 0; col < theBoard[row].size(); ++col) {
+                td->notify(Move{row, col, row, col, nullptr, theBoard[row][col]});
+                gd->notify(Move{row, col, row, col, nullptr, theBoard[row][col]});
+            }
+        }
+        return;
+    }
     for (int row = 0; row < theBoard.size(); ++row) {
         for (int col = 0; col < theBoard[row].size(); ++col) {
             auto newPiece = defaultConstructPiece(row, col);
@@ -241,9 +251,9 @@ bool Board::inCheck(Color color) {
 }
 
 bool Board::checkMate(Color color) {
+    // if (!inCheck(color)) return false;
     Piece *kingToCheck = color == Color::BLACK ? blackKing : whiteKing;
     vector<vector<bool>> dangerZone = color == Color::BLACK ? whiteDangerZone : blackDangerZone; 
-    if (!inCheck(color)) return false;
     for (int row = 0; row < theBoard.size(); ++row) {
         for (int col = 0; col < theBoard[row].size(); ++col) {
             Piece *p = theBoard[row][col];
@@ -279,6 +289,7 @@ bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
             theBoard[m.r1][m.c1] = pieceToMove;
 
             if (inCheck(pieceToMove->getColor())) {
+                cout << "IN CHECK" << endl;
                 theBoard[m.r0][m.c0] = pieceToMove;
                 pieceToMove->setPosition(m.r0, m.c0);
                 theBoard[m.r1][m.c1] = m.captures;

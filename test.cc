@@ -164,7 +164,7 @@ int main(int argc, char const *argv[]) {
                         std::cerr << e.what() << '\n';
                     }
                     
-                }
+                 }
 
             } else {
                 cout << "Invalid players type: " << p1 << ", " << p2 << endl;
