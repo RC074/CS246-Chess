@@ -210,7 +210,7 @@ bool Board::move(Piece *pieceToMove, int row, int col) {
                 capturedPiece->setIsCaptured(true);
 
                 // Move m = getPreviousMove();
-                // capturedPiece->notifyAllObservers(m);
+                gd->notify(Move{m.r1, m.c1, m.r1, m.c1, nullptr, nullptr});
                 delete capturedPiece;                               
             }
             // Move m = getPreviousMove();

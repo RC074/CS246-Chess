@@ -78,6 +78,7 @@ std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
             }
             else out << td.theDisplay[i][j];
         }
-    }
+    } 
+    out << "\n  abcdefgh";
     return out;
 }
