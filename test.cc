@@ -91,6 +91,8 @@ int main(int argc, char const *argv[]) {
                     }
                 }
                 else if (cmd == "done") {
+                    board.updateDangerZone(Color::BLACK);
+                    board.updateDangerZone(Color::WHITE);
                     if (!board.validateBoard()) {
                         cout << "incorrect setup" << endl;
                         continue;

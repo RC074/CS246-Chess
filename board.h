@@ -47,7 +47,7 @@ public:
     vector<vector<Piece*>> getBoard();
     Color getWinner();
     void undo();
-    void updateDangerZone(Player *playerToCheck);
+    void updateDangerZone(Color color);
     bool inCheck(Color color);
     bool checkMate(Color color);
     Move getPreviousMove();

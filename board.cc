@@ -33,12 +33,14 @@ void Board::setPieceAt(PieceType pt, int row, int col, Color c) {
     else if (pt == PieceType::ROOK) newPiece = new Rook {row, col, c}; 
     else return;
 
-    td->notify(Move{row, col, row, col, newPiece, newPiece});
-    gd->notify(Move{row, col, row, col, newPiece, newPiece});
+    
     
     // put piece into the board
     removePieceAt(row, col);
     theBoard[row][col] = newPiece;
+
+    td->notify(Move{row, col, row, col, newPiece, newPiece});
+    gd->notify(Move{row, col, row, col, newPiece, newPiece});
 }
 // black pieces on the top, rows and cols indexed from 0-7
 Piece *defaultConstructPiece(int row, int col) {
@@ -208,7 +210,8 @@ bool Board::move(Piece *pieceToMove, int row, int col) {
                 capturedPiece->setIsCaptured(true);
 
                 // Move m = getPreviousMove();
-                capturedPiece->notifyAllObservers(m);
+                // capturedPiece->notifyAllObservers(m);
+                delete capturedPiece;                               
             }
             // Move m = getPreviousMove();
             pieceToMove->notifyAllObservers(m);
@@ -262,9 +265,9 @@ void Board::undo() {
     newPosPiece->setPosition(oldr, oldc); // set the piece's position to the old position
 }
 
-void Board::updateDangerZone(Player *playerToCheck) {
+void Board::updateDangerZone(Color color) {
     vector<vector<bool>> dangerZone(BOARD_SIZE, vector<bool>(BOARD_SIZE, true));
-    Color opposingColor = (playerToCheck->getColor() == Color::BLACK) ? Color::WHITE : Color::BLACK;
+    Color opposingColor = color;
     for (int row = 0; row < theBoard.size(); ++row) {
         for (int col = 0; col < theBoard[row].size(); ++col) {
             Piece *p = theBoard[row][col];
@@ -286,6 +289,7 @@ void Board::updateDangerZone(Player *playerToCheck) {
 bool Board::inCheck(Color color) {
     Piece *kingToCheck = color == Color::BLACK ? blackKing : whiteKing;
     vector<vector<bool>> dangerZone = color == Color::BLACK ? whiteDangerZone : blackDangerZone; 
+    if (!blackKing || !whiteKing) return false;
     if (dangerZone[kingToCheck->getRow()][kingToCheck->getCol()]) {
         return false;
     }

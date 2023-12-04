@@ -35,6 +35,9 @@ std::vector<Move> Rook::getPossibleMoves(std::vector<std::vector<Piece*> > board
             Piece *targetPiece = board[newRow][newCol];
             if (!targetPiece || targetPiece->getColor() != this->getColor()) {
                 moves.push_back({currentRow, currentCol, newRow, newCol, targetPiece, this});
+                if (targetPiece && targetPiece->getColor() != this->getColor()) {
+                    break;
+                }
             } else {
               break;
             }

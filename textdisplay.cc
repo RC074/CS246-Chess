@@ -72,6 +72,7 @@ TextDisplay::~TextDisplay() {}
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td) {
     for (int i = 0; i < td.gridSize; ++i) {
         for (int j = 0; j < td.gridSize; ++j) {
+            if (j == 0) out << td.gridSize - i << " ";
             if (j == td.theDisplay[0].size() - 1) {
                 out << td.theDisplay[i][j] << std::endl;
             }
