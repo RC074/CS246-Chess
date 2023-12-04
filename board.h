@@ -41,8 +41,8 @@ public:
     void removePieceAt(int row, int col);
     void setPieceAt(PieceType pt, int row, int col, Color c);
     bool validateBoard(); // use at the end of setup
-    bool move(int r0, int c0, int r1, int c1);
-    bool move(Piece *pieceToMove, int row, int col);
+    bool move(int r0, int c0, int r1, int c1, PieceType promotion);
+    bool move(Piece *pieceToMove, int row, int col, PieceType promotion);
     Piece* getPieceAt(int row, int col);
     vector<vector<Piece*>> getBoard();
     Color getWinner();
@@ -50,6 +50,7 @@ public:
     void updateDangerZone(Color color);
     bool inCheck(Color color);
     bool checkMate(Color color);
+    void Board::promotePawn(Piece *&pieceToMove, int row, int col, PieceType promotion);
     Move getPreviousMove();
     Player *getPlayerBlack();
     Player *getPlayerWhite();

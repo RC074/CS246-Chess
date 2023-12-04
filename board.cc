@@ -194,14 +194,14 @@ void Board::clearBoard() {
     winner = Color::NO_COLOR;
 }
 
-bool Board::move(Piece *pieceToMove, int row, int col) {
+bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
     // we check if the move is a valid move
     // if it is, we add the move to the stack ian the form [r1, c1, r2, c2]
     if (!pieceToMove) return false;
     vector<Move> moves = pieceToMove->getPossibleMoves(theBoard);
     bool moved = false;
     for (Move m : moves) {
-        if (m.r1 == row && m.c1 == col) {
+        if (m.r1 == row && m.c1 == col) { // checking if valid move
             pieceToMove->setPosition(row, col);
             theBoard[m.r0][m.c0] = nullptr;
             theBoard[m.r1][m.c1] = pieceToMove;
@@ -213,6 +213,12 @@ bool Board::move(Piece *pieceToMove, int row, int col) {
                 gd->notify(Move{m.r1, m.c1, m.r1, m.c1, nullptr, nullptr});
                 delete capturedPiece;                               
             }
+
+            if (pieceToMove->pieceType() == PieceType::PAWN && 
+                (pieceToMove->getRow() == 0 || pieceToMove->getRow() == 7)) {
+                    promotePawn(pieceToMove, row, col, promotion);
+            }
+
             // Move m = getPreviousMove();
             pieceToMove->notifyAllObservers(m);
             moved = true;
@@ -225,9 +231,37 @@ bool Board::move(Piece *pieceToMove, int row, int col) {
     
 }
 
-bool Board::move(int r0, int c0, int r1, int c1) {
+void Board::promotePawn(Piece *&pieceToMove, int row, int col, PieceType promotion) {
+    Color pieceColor = pieceToMove->getColor();
+    Piece *promotedPiece = nullptr;
+    switch (promotion) {
+        case PieceType::QUEEN:
+            promotedPiece = new Queen{row, col, pieceColor};
+            break;
+        case PieceType::ROOK:
+            promotedPiece = new Rook{row, col, pieceColor};
+            break;
+        // Add cases for other piece types as needed
+        default:
+            // Handle unrecognized promotion type (optional)
+            break;
+    }
+
+    theBoard[row][col] = nullptr;
+    promotedPiece->attach(td);
+    promotedPiece->attach(gd);
+    theBoard[row][col] = promotedPiece;
+    
+    // Update the original pointer in the move function
+    delete pieceToMove;
+    pieceToMove = promotedPiece;
+}
+
+
+
+bool Board::move(int r0, int c0, int r1, int c1, PieceType promotion) {
     Piece *p = getPieceAt(r0, c0);
-    return move(p, r1, c1);
+    return move(p, r1, c1, promotion);
 }
 
 Piece* Board::getPieceAt(int row, int col) {
