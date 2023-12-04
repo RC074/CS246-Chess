@@ -207,6 +207,65 @@ void Board::clearBoard() {
     winner = Color::NO_COLOR;
 }
 
+void Board::updateDangerZone(Color color) {
+    vector<vector<bool>> dangerZone(BOARD_SIZE, vector<bool>(BOARD_SIZE, true));
+    Color opposingColor = color;
+    for (int row = 0; row < theBoard.size(); ++row) {
+        for (int col = 0; col < theBoard[row].size(); ++col) {
+            Piece *p = theBoard[row][col];
+            if (p && p->getColor() == opposingColor) {
+                vector<Move> moves = p->getPossibleMoves(theBoard);
+                for (Move m : moves) {
+                    dangerZone[m.r1][m.c1] = false;
+                }
+            }
+        }
+    }
+    if (opposingColor == Color::BLACK) {
+        blackDangerZone = dangerZone;
+    } else {
+        whiteDangerZone = dangerZone;
+    }
+}
+
+bool Board::inCheck(Color color) {
+    updateDangerZone(Color::BLACK);
+    updateDangerZone(Color::WHITE);
+    Piece *kingToCheck = (color == Color::BLACK) ? blackKing : whiteKing;
+    vector<vector<bool>> &dangerZone = (color == Color::BLACK) ? whiteDangerZone : blackDangerZone; 
+    if (!blackKing || !whiteKing) return false;
+    if (dangerZone[kingToCheck->getRow()][kingToCheck->getCol()]) {
+        return false;
+    }
+    return true;
+}
+
+bool Board::checkMate(Color color) {
+    Piece *kingToCheck = color == Color::BLACK ? blackKing : whiteKing;
+    vector<vector<bool>> dangerZone = color == Color::BLACK ? whiteDangerZone : blackDangerZone; 
+    if (!inCheck(color)) return false;
+    for (int row = 0; row < theBoard.size(); ++row) {
+        for (int col = 0; col < theBoard[row].size(); ++col) {
+            Piece *p = theBoard[row][col];
+            if (p && p->getColor() == color) {
+                vector<Move> moves = p->getPossibleMoves(theBoard);
+                for (Move m : moves) {
+                    p->setPosition(m.r1, m.c1);
+                    theBoard[m.r1][m.c1] = p;
+                    theBoard[m.r0][m.c0] = nullptr;
+
+                    if (!inCheck(color)) return false;
+
+                    p->setPosition(m.r0, m.c0);
+                    theBoard[m.r0][m.c0] = p;
+                    theBoard[m.r1][m.c1] = m.captures;
+                }
+            }
+        }
+    }
+    return true;
+}
+
 bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
     // we check if the move is a valid move
     // if it is, we add the move to the stack ian the form [r1, c1, r2, c2]
@@ -218,6 +277,14 @@ bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
             pieceToMove->setPosition(row, col);
             theBoard[m.r0][m.c0] = nullptr;
             theBoard[m.r1][m.c1] = pieceToMove;
+
+            if (inCheck(pieceToMove->getColor())) {
+                theBoard[m.r0][m.c0] = pieceToMove;
+                pieceToMove->setPosition(m.r0, m.c0);
+                theBoard[m.r1][m.c1] = m.captures;
+                return false;
+            }
+
             if (m.captures) {
                 Piece *capturedPiece = m.captures;
                 capturedPiece->setIsCaptured(true);
@@ -312,52 +379,6 @@ void Board::undo() {
     theBoard[newr][newc] = prevMove.captures ? const_cast<Piece*>(prevMove.captures) : nullptr;
     theBoard[oldr][oldc] = newPosPiece; // set the old position to the piece that was at the new position
     newPosPiece->setPosition(oldr, oldc); // set the piece's position to the old position
-}
-
-void Board::updateDangerZone(Color color) {
-    vector<vector<bool>> dangerZone(BOARD_SIZE, vector<bool>(BOARD_SIZE, true));
-    Color opposingColor = color;
-    for (int row = 0; row < theBoard.size(); ++row) {
-        for (int col = 0; col < theBoard[row].size(); ++col) {
-            Piece *p = theBoard[row][col];
-            if (p && p->getColor() == opposingColor) {
-                vector<Move> moves = p->getPossibleMoves(theBoard);
-                for (Move m : moves) {
-                    dangerZone[m.r1][m.c1] = false;
-                }
-            }
-        }
-    }
-    if (opposingColor == Color::BLACK) {
-        blackDangerZone = dangerZone;
-    } else {
-        whiteDangerZone = dangerZone;
-    }
-}
-
-bool Board::inCheck(Color color) {
-    Piece *kingToCheck = (color == Color::BLACK) ? blackKing : whiteKing;
-    vector<vector<bool>> &dangerZone = (color == Color::BLACK) ? whiteDangerZone : blackDangerZone; 
-    if (!blackKing || !whiteKing) return false;
-    if (dangerZone[kingToCheck->getRow()][kingToCheck->getCol()]) {
-        return false;
-    }
-    return true;
-}
-
-bool Board::checkMate(Color color) {
-    Piece *kingToCheck = color == Color::BLACK ? blackKing : whiteKing;
-    vector<vector<bool>> dangerZone = color == Color::BLACK ? whiteDangerZone : blackDangerZone; 
-    if (dangerZone[kingToCheck->getRow()][kingToCheck->getCol()]) {
-        return false;
-    }
-    vector<Move> moves = kingToCheck->getPossibleMoves(theBoard);
-    for (Move m : moves) {
-        if (dangerZone[m.r1][m.c1] == 0) {
-            return false;
-        }
-    }
-    return true;
 }
 
 Move Board::getPreviousMove() {

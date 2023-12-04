@@ -139,7 +139,10 @@ int main(int argc, char const *argv[]) {
                                 cout << "invalid move" << endl;
                                 continue;
                             }
+                            
                             cout << board << endl;
+                            if (board.checkMate(Color::BLACK)) cout << "White Player Wins" << endl;
+                            if (board.checkMate(Color::WHITE)) cout << "Black Player Wins" << endl;
 
                         }
                         else if (cmd == "undo") {
