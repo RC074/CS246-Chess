@@ -50,3 +50,40 @@ std::vector<Move> King::getPossibleMoves(std::vector<std::vector<Piece*> > board
 
     return moves;
 }
+
+
+bool castling(std::vector<std::vector<Piece*> > board, std::vector<std::vector<bool>> dangerZone, King *king, std::string destination) {
+    int king_r = king->getRow();
+    int king_c = king->getCol();
+    if (destination == "g1" || destination == "g8") {
+        if (!board[king_r][king_c+1] && !board[king_r][king_c+2]) {
+            if (dangerZone[king_r][king_c+1] && dangerZone[king_r][king_c+2]) {
+                Piece *rook = board[king_r][king_c+3];
+                if (rook->getMoved()) return false;
+                rook->setMoved();
+                rook->setPosition(king_r, king_c+1);
+                rook->notifyAllObservers(Move{king_r, king_c+3, king_r, king_c+1, nullptr, rook});
+                king->setMoved();
+                king->setPosition(king_r, king_c+2);
+                king->notifyAllObservers(Move{king_r, king_c, king_r, king_c+2, nullptr, king});
+                return true;
+            }
+        }
+    }
+    if (destination == "c1" || destination == "c8") {
+        if (!board[king_r][king_c-1] && !board[king_r][king_c-2]) {
+            if (dangerZone[king_r][king_c-1] && dangerZone[king_r][king_c-2]) {
+                Piece *rook = board[king_r][king_c-4];
+                if (rook->getMoved()) return false;
+                rook->setMoved();
+                rook->setPosition(king_r, king_c-1);
+                rook->notifyAllObservers(Move{king_r, king_c-4, king_r, king_c-1, nullptr, rook});
+                king->setMoved();
+                king->setPosition(king_r, king_c-2);
+                king->notifyAllObservers(Move{king_r, king_c, king_r, king_c-2, nullptr, king});
+                return true;
+            }
+        }
+    }
+    return false;
+}
