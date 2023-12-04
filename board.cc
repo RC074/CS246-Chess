@@ -264,7 +264,13 @@ bool Board::checkMate(Color color) {
                     theBoard[m.r1][m.c1] = p;
                     theBoard[m.r0][m.c0] = nullptr;
 
-                    if (!inCheck(color)) return false;
+                    if (!inCheck(color)) {
+                        p->setPosition(m.r0, m.c0);
+                        theBoard[m.r0][m.c0] = p;
+                        theBoard[m.r1][m.c1] = m.captures;
+                        return false;
+
+                    }
 
                     p->setPosition(m.r0, m.c0);
                     theBoard[m.r0][m.c0] = p;
