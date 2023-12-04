@@ -9,9 +9,9 @@ string toString(int row, int col) {
     return readable.str();
 }
 
-istream &getPos(istream &in, int row, int col) {
+void getPos(istream &in, int &row, int &col) {
     string readable;
-    if (!(in >> readable)) return in;
+    if (!(in >> readable)) return;
     col = readable[0] - 'a';
     row = 8 - (readable[1] - '0');
 }

@@ -11,7 +11,7 @@ using namespace std;
 string toString(int row, int col);
 
 // a8 => (0,0), the input format must be correct
-istream &getPos(istream &in, int row, int col);
+void getPos(istream &in, int &row, int &col);
 
 PieceType getPieceType(char c);
 

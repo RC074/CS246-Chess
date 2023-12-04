@@ -103,7 +103,7 @@ Board::~Board() {
 }
 
 void Board::init(Player &blackPlayer, Player &whitePlayer, 
-                 bool useStandard) {
+                 bool useStandard, bool graphicOn) {
     clearBoard();
 
     // the board is filled with nullptr now
@@ -131,7 +131,7 @@ void Board::init(Player &blackPlayer, Player &whitePlayer,
             gd->notify(Move{row, col, row, col, nullptr, theBoard[row][col]});
             if (theBoard[row][col]) {
                 theBoard[row][col]->attach(td);
-                theBoard[row][col]->attach(gd);
+                if (graphicOn) theBoard[row][col]->attach(gd);
             }
             
         }

@@ -21,6 +21,7 @@ Move Human::getNextMove(istream &in) const {
     getPos(p0, r0, c0);
     getPos(p1, r1, c1);
     Move move {r0, c0, r1, c1};
+    cout << r0 << c0 << endl;
     if (instruction.size() == 3) {
         char c;
         istringstream iss {instruction[2]};

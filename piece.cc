@@ -2,6 +2,14 @@
 
 Piece::Piece(int row, int col, Color color):row{row}, col{col}, color{color}{}
 
+bool Piece::getMoved() const {
+  return moved;
+}
+
+void Piece::setMoved() {
+  moved = true;
+}
+
 Color Piece::getColor() const {
   return color;
 }
@@ -21,6 +29,7 @@ int Piece::getCol() const {
 void Piece::setPosition(int r, int c) {
   this->row = r;
   this->col = c;
+  setMoved();
 }
 
 void Piece::setIsCaptured(bool t) {

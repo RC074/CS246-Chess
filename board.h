@@ -37,7 +37,7 @@ public:
     Board(Xwindow &window);
     ~Board();
     void init(Player &blackPlayer, Player &WhitePlayer, 
-              bool useStandard = true);
+              bool useStandard = true, bool graphicOn = true);
     void removePieceAt(int row, int col);
     void setPieceAt(PieceType pt, int row, int col, Color c);
     bool validateBoard(); // use at the end of setup

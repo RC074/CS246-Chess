@@ -22,7 +22,10 @@ class Piece {
   Color color;
   std::vector<Observer*> observers;
   bool isCaptured = false;
+  bool moved = false;
 public:
+    bool getMoved() const;
+    void setMoved(); // only sets moved to true
     bool getIsCaptured() const;
     Piece(int row, int col, Color color);
     virtual ~Piece() = default;

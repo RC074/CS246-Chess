@@ -16,7 +16,6 @@ PieceType Pawn::pieceType() const {
 
 std::vector<Move> Pawn::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
     std::vector<Move> moves;
-    bool moved = true;
     int direction = (this->getColor() == Color::WHITE) ? -1 : 1; // Assuming white pawns move up (decrease in row)
 
     int currentRow = getRow();
@@ -40,7 +39,7 @@ std::vector<Move> Pawn::getPossibleMoves(std::vector<std::vector<Piece*> > board
                 moves.push_back({currentRow, currentCol, newRow, currentCol+1, targetPiece, this});
             }
         }
-        if (!moved) {
+        if (!getMoved()) {
           newRow += direction;
           if (newRow >= 0 && newRow < 8) {
               targetPiece = board[newRow][currentCol];
@@ -49,6 +48,7 @@ std::vector<Move> Pawn::getPossibleMoves(std::vector<std::vector<Piece*> > board
               }
           }
         }
-      }
-      return moves;
     }
+    return moves;
+}
+
