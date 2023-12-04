@@ -14,6 +14,7 @@ Move Computer::getNextMove(istream &in) const {
             if (!piece || piece->getColor() != getColor()) continue;
             auto moves = piece->getPossibleMoves(board);
             for (auto move:moves) {
+                if (getBoard()->leadsToCheck(move)) continue;
                 if (move.r1 < 0 || move.r1 > 8 || move.c1 < 0 || move.c1 > 8) {
                     continue;
                 }
@@ -35,7 +36,12 @@ vector<vector<bool>> Computer::getThreatBoard() const {
         for (int col = 0; col < BOARD_SIZE; ++col) {
             auto piece = theBoard[row][col];
             if (!piece || piece->getColor() == getColor()) continue;
-            for (auto move:theBoard[row][col]->getPossibleMoves(theBoard)) {
+            auto threats = theBoard[row][col]->getPossibleMoves(theBoard);
+            if (piece->pieceType() == PieceType::PAWN) {
+                Pawn *pawn = dynamic_cast<Pawn *> (piece);
+                threats = pawn->getThreat();
+            }
+            for (auto move:threats) {
                 threat[move.r1][move.c1] = true;
             }
         }

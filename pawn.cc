@@ -1,5 +1,7 @@
 #include "pawn.h"
 
+using namespace std;
+
 Pawn::Pawn(int row, int col, Color color):Piece{row, col, color} {}
 
 Pawn::~Pawn() {
@@ -13,11 +15,24 @@ PieceType Pawn::pieceType() const {
     return PieceType::PAWN;
 }
 
+vector<Move> Pawn::getThreat() {
+    vector <Move> moves {};
+    int direction = (this->getColor() == Color::WHITE) ? -1 : 1;
+    if (getRow() + direction > 7 || getRow() + direction < 0) return moves;
+    if (getCol() > 0) {
+        moves.emplace_back(Move{getRow(), getCol(), getRow()+direction, getCol()-1, nullptr, this});
+    }
+    if (getCol() < 7) {
+        moves.emplace_back(Move{getRow(), getCol(), getRow()+direction, getCol()+1, nullptr, this});
+    }
+    
+}
 
 
 
-std::vector<Move> Pawn::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
-    std::vector<Move> moves;
+
+vector<Move> Pawn::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
+    vector<Move> moves;
     int direction = (this->getColor() == Color::WHITE) ? -1 : 1; // Assuming white pawns move up (decrease in row)
 
     int currentRow = getRow();

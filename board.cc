@@ -6,6 +6,9 @@ using Point = pair<int, int>;
 using Row = vector<Piece *>;
 
 void Board::removePieceAt(int row, int col) {
+    if (row > 7 || row < 0 || col > 7 || row < 0) {
+        throw std::out_of_range{"out of board range"};
+    }
     if (!theBoard[row][col]) return;
     delete theBoard[row][col];
     theBoard[row][col] = nullptr;
@@ -25,6 +28,9 @@ void Board::removePieceAt(int row, int col) {
 // td->notify(Move{row, col, row, col, nullptr, theBoard[row][col]});
 
 void Board::setPieceAt(PieceType pt, int row, int col, Color c) {
+    if (row > 7 || row < 0 || col > 7 || row < 0) {
+        throw std::out_of_range{"out of board range"};
+    }
     Piece *newPiece;
     
     if (pt == PieceType::KING) newPiece = new King {row, col, c};
@@ -282,9 +288,27 @@ bool Board::checkMate(Color color) {
     return true;
 }
 
+bool Board::leadsToCheck(Move m) {
+    Piece * p = const_cast<Piece *>(m.p);
+    p->setPosition(m.r1, m.c1);
+    theBoard[m.r0][m.c0] = nullptr;
+    theBoard[m.r1][m.c1] = p;
+    bool result = false;
+    if (inCheck(p->getColor())) {
+        result = true;
+    }
+    theBoard[m.r0][m.c0] = p;
+    p->setPosition(m.r0, m.c0);
+    theBoard[m.r1][m.c1] = m.captures;
+    return result;
+}
+
 bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
     // we check if the move is a valid move
     // if it is, we add the move to the stack ian the form [r1, c1, r2, c2]
+    if (row > 7 || row < 0 || col > 7 || row < 0) {
+        throw std::out_of_range{"out of board range"};
+    }
     if (!pieceToMove) return false;
     vector<Move> moves = pieceToMove->getPossibleMoves(theBoard);
     bool moved = false;
@@ -365,6 +389,9 @@ bool Board::move(int r0, int c0, int r1, int c1, PieceType promotion) {
 }
 
 Piece* Board::getPieceAt(int row, int col) {
+    if (row > 7 || row < 0 || col > 7 || row < 0) {
+        throw std::out_of_range{"out of board range"};
+    }
     return theBoard[row][col];
 }
 
