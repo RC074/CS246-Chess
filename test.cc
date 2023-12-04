@@ -179,7 +179,7 @@ int main(int argc, char const *argv[]) {
                             // }
                             
                             // the opponent's turn now
-                            turn = (turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
+                            //turn = (turn == Color::WHITE) ? Color::BLACK : Color::WHITE;
 
                         // } else {
                         //     cout << "Invalid move" << endl;
@@ -198,6 +198,7 @@ int main(int argc, char const *argv[]) {
                     }
                     else {
                         cout << "Invalid command: " << cmd << endl;
+                        continue;
                     }
                     turn = (turn == Color::BLACK) ? Color::WHITE : Color::BLACK;
                 }
