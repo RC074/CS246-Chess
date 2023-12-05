@@ -20,7 +20,6 @@ PieceType getPieceType(char c) {
     char currChar = c;
     if (currChar >= 97) currChar -= 32;
 
-    // cout << "OLD CHAR: " << c << ", NEW CHAR: " << currChar << endl;
     if (currChar == 'K') return PieceType::KING;
     else if (currChar == 'Q') return PieceType::QUEEN;
     else if (currChar == 'B') return PieceType::BISHOP;

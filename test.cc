@@ -42,8 +42,7 @@ int main(int argc, char const *argv[]) {
         if (cmd == "setup") {
             cout << "entering setup mode" << endl;
 
-            while (true) {
-                cin >> cmd;
+            while (cin >> cmd) {
                 if (cmd == "+") { // adding a piece
                     char piece;
                     string pos;
@@ -166,6 +165,12 @@ int main(int argc, char const *argv[]) {
                                 cout << "Checkmate! Black Wins!" << endl;
                                 blackScoreRaw += 10;
                                 break;
+                            }
+                            if (board.inCheck(Color::WHITE)) {
+                                cout << "White is in check." << endl;
+                            }
+                            if (board.inCheck(Color::BLACK)) {
+                                cout << "Black is in check." << endl;
                             }
 
                         }

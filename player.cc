@@ -7,9 +7,6 @@ bool Player::move(istream &in, bool useStandard) {
     Move next = getNextMove(in);
 
     Piece *p = b->getPieceAt(next.r0, next.c0);
-    if (p) {
-        cout << toString(p->getRow(), p->getCol()) << endl;
-    }
     if (!p || p->getColor() != getColor()) return false;
     if (useStandard) {
         if (p->pieceType() == PieceType::KING && !p->getMoved()) {

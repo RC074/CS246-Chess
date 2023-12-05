@@ -327,7 +327,6 @@ bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
             theBoard[m.r1][m.c1] = pieceToMove;
 
             if (inCheck(pieceToMove->getColor())) {
-                cout << "IN CHECK" << endl;
                 theBoard[m.r0][m.c0] = pieceToMove;
                 pieceToMove->setPosition(m.r0, m.c0);
                 theBoard[m.r1][m.c1] = m.captures;
