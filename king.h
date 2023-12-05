@@ -9,7 +9,7 @@ public:
     King(int row, int col, Color color);
     ~King() override;
     std::vector<Move> getPossibleMoves(std::vector<std::vector<Piece*> > board) const override;
-    bool castling(std::vector<std::vector<Piece*> > board, std::vector<std::vector<bool>> dangerZone, King *king, std::string destination);
+    bool castling(std::vector<std::vector<Piece*> > board, std::vector<std::vector<bool>> dangerZone, King *king, int destination);
     PieceType pieceType() const override;
     void notify(Piece &p) override;
 };
