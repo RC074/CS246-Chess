@@ -11,6 +11,9 @@
 
 using namespace std;
 
+// FLAGS
+Color START_COLOR = Color::WHITE;
+
 // Level1 p1;
 // Level1 p2;
 // computer[1-4]
@@ -125,13 +128,13 @@ int main(int argc, char const *argv[]) {
                 else if (p2 == "computer3") player2 = make_shared<Level3>();
                 else player2 = make_shared<Level4>();
 
-                board.init(*player1, *player2, useStandard);
+                board.init(*player2, *player1, useStandard);
                 cout << board << endl; // print the initialized board
 
                 // game HERE, MOVES HERE
                 while (true) {
                     try {
-                        Player &p = (turn == Color::WHITE) ? *player1 : *player2;
+                        Player &p = (turn == Color::WHITE) ?  *player1 : *player2;
                         cin >> cmd;
 
                         if (cmd == "move") {

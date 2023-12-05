@@ -1,5 +1,7 @@
 #ifndef __COMPUTER_H__
 #define __COMPUTER_H__
+#include <map>
+#include <memory>
 #include "player.h"
 #include "readable.h"
 
@@ -30,6 +32,7 @@ protected:
 };
 
 class Level4: public Computer {
+    int developmentScore(Move m) const;
 protected:
     int rankMove(const Move &m, BoolBoard &threat) const override;
 };

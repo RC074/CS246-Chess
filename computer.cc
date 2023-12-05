@@ -1,5 +1,14 @@
 #include "computer.h"
 
+std::map<PieceType, int> PieceValues {
+    {PieceType::PAWN, 1},
+    {PieceType::KNIGHT, 3},
+    {PieceType::BISHOP, 3},
+    {PieceType::ROOK, 5},
+    {PieceType::QUEEN, 9}
+};
+
+
 PlayerType Computer::playerType() const {
     return PlayerType::COMPUTER;
 }
@@ -72,12 +81,47 @@ int Level3::rankMove(const Move &move, BoolBoard &threat) const {
     return getColor() == Color::BLACK? move.r1 + 1 : 8-move.r1;
 }
 
+int Level4::developmentScore(Move m) const {
+    int score = 0;
+    vector<vector<Piece *>> imagination = getBoard()->getBoard();
+    Piece *pieceToMove = imagination[m.r0][m.c0];
+    BoolBoard dBoard = BoolBoard(8, vector<bool> (8, false));
+    imagination[m.r0][m.c0] = nullptr;
+    imagination[m.r1][m.c1] = pieceToMove;
+    for (auto row:imagination) {
+        for (auto p:row) {
+            if (!p || p->getColor() != getColor()) continue;
+            auto threats = p->getPossibleMoves(imagination);
+            if (p->pieceType() == PieceType::PAWN) {
+                Pawn *pawn = dynamic_cast<Pawn *> (p);
+                threats = pawn->getThreat();
+            }
+            for (auto move:p->getPossibleMoves(imagination)) {
+                dBoard[move.r1][move.c1] = true;
+            }
+        }
+    }
+    for (auto row:dBoard) {
+        for (auto p:row) {
+            if (p) ++score;
+        }
+    }
+    return score;
+}
+
 int Level4::rankMove(const Move &move, BoolBoard &threat) const {
-    if (threat[move.r1][move.c1]) return 0;
+    int captureScore = (move.captures) ? 
+        PieceValues[move.captures->pieceType()] : 0;
+    if (threat[move.r1][move.c1]) captureScore -= PieceValues[move.p->pieceType()];
+    if (captureScore > 0) return 100 + captureScore;
+    if (captureScore < 0) return 0;
     if (threat[move.r0][move.c0]) return 11;
     if (move.captures) {
         if (move.captures->pieceType() == PieceType::KING) return 12;
         return 9;
     }
-    return getColor() == Color::BLACK? move.r1 + 1 : 8-move.r1;
+    int score = getColor() == Color::BLACK? 
+        move.r1 + 1 - abs(4-move.c1) : 8-move.r1 - abs(4-move.c1);
+    score += developmentScore(move);
+    return score;
 }
