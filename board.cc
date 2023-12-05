@@ -409,7 +409,7 @@ Piece* Board::getPieceAt(int row, int col) {
     return theBoard[row][col];
 }
 
-vector<vector<Piece*>> Board::getBoard() {
+vector<vector<Piece*>> &Board::getBoard() {
     return theBoard;
 }
 

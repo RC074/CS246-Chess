@@ -46,7 +46,7 @@ public:
     bool move(Piece *pieceToMove, int row, int col, PieceType promotion);
     bool leadsToCheck(Move m); // computer use only
     Piece* getPieceAt(int row, int col);
-    vector<vector<Piece*>> getBoard();
+    vector<vector<Piece*>> &getBoard();
     Color getWinner();
     void undo();
     void updateDangerZone(Color opponentColor);
