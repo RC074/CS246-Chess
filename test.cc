@@ -133,10 +133,10 @@ int main(int argc, char const *argv[]) {
                 cout << board << endl; // print the initialized board
 
                 // game HERE, MOVES HERE
-                while (true) {
+                while (cin >> cmd) {
                     try {
                         Player &p = (turn == Color::WHITE) ?  *player1 : *player2;
-                        cin >> cmd;
+                        
 
                         if (cmd == "move") {
                             if (!p.move(cin, useStandard)) {
