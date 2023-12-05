@@ -37,7 +37,8 @@ public:
     void setPosition(int r, int c);
     void notifyAllObservers(Move m);
     void attach(Observer *ob);
-    virtual std::vector<Move> getPossibleMoves(std::vector<std::vector<Piece*> > board) const = 0;
+    virtual std::vector<Move> getPossibleMoves(std::vector<std::vector<Piece*> > board,
+    bool potential = false) const = 0;
     void setIsCaptured(bool t);
 };
 

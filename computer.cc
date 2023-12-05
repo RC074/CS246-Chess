@@ -35,6 +35,9 @@ Move Computer::getNextMove(istream &in) const {
             }
         }
     }
+    if (bestMove.p->pieceType() == PieceType::PAWN &&
+        (bestMove.r1 == 0 || bestMove.r1 == 7)) 
+            bestMove.promotion = PieceType::QUEEN;
     return bestMove;
 }
 
@@ -45,7 +48,7 @@ vector<vector<bool>> Computer::getThreatBoard() const {
         for (int col = 0; col < BOARD_SIZE; ++col) {
             auto piece = theBoard[row][col];
             if (!piece || piece->getColor() == getColor()) continue;
-            auto threats = theBoard[row][col]->getPossibleMoves(theBoard);
+            auto threats = theBoard[row][col]->getPossibleMoves(theBoard, true);
             if (piece->pieceType() == PieceType::PAWN) {
                 Pawn *pawn = dynamic_cast<Pawn *> (piece);
                 threats = pawn->getThreat();
@@ -88,6 +91,7 @@ int Level4::developmentScore(Move m) const {
     BoolBoard dBoard = BoolBoard(8, vector<bool> (8, false));
     imagination[m.r0][m.c0] = nullptr;
     imagination[m.r1][m.c1] = pieceToMove;
+    pieceToMove->setPosition(m.r1, m.c1);
     for (auto row:imagination) {
         for (auto p:row) {
             if (!p || p->getColor() != getColor()) continue;
@@ -98,6 +102,14 @@ int Level4::developmentScore(Move m) const {
             }
             for (auto move:p->getPossibleMoves(imagination)) {
                 dBoard[move.r1][move.c1] = true;
+                if (move.captures) {
+                    score += PieceValues[move.captures->pieceType()];
+                    if (move.captures->pieceType() == PieceType::KING) {
+                        score += 10;
+                    }
+                } else if (imagination[move.r1][move.c1]) {
+                    score += PieceValues[imagination[move.r1][move.c1]->pieceType()];
+                }
             }
         }
     }
@@ -106,20 +118,22 @@ int Level4::developmentScore(Move m) const {
             if (p) ++score;
         }
     }
+    pieceToMove->setPosition(m.r0, m.c0);
     return score;
 }
 
 int Level4::rankMove(const Move &move, BoolBoard &threat) const {
+    if (move.captures && !threat[move.r1][move.c1]) return 200 + PieceValues[move.p->pieceType()];
     int captureScore = (move.captures) ? 
         PieceValues[move.captures->pieceType()] : 0;
     if (threat[move.r1][move.c1]) captureScore -= PieceValues[move.p->pieceType()];
-    if (captureScore > 0) return 100 + captureScore;
+    if (captureScore > 0) return 101 + captureScore;
     if (captureScore < 0) return 0;
-    if (threat[move.r0][move.c0]) return 11;
-    if (move.captures) {
-        if (move.captures->pieceType() == PieceType::KING) return 12;
-        return 9;
-    }
+    if (threat[move.r0][move.c0] && !threat[move.r1][move.c1]) return 100+PieceValues[move.p->pieceType()];
+    // if (move.captures) {
+    //     if (move.captures->pieceType() == PieceType::KING) return 12;
+    //     return 9;
+    // }
     int score = getColor() == Color::BLACK? 
         move.r1 + 1 - abs(4-move.c1) : 8-move.r1 - abs(4-move.c1);
     score += developmentScore(move);

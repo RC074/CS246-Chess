@@ -14,7 +14,7 @@ PieceType Rook::pieceType() const {
 }
 
 
-std::vector<Move> Rook::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
+std::vector<Move> Rook::getPossibleMoves(std::vector<std::vector<Piece*> > board, bool potential) const {
     std::vector<Move> moves;
 
     const int directions[4][2] = {
@@ -39,7 +39,8 @@ std::vector<Move> Rook::getPossibleMoves(std::vector<std::vector<Piece*> > board
                     break;
                 }
             } else {
-              break;
+                if (potential) moves.push_back({currentRow, currentCol, newRow, newCol, targetPiece, this});
+                break;
             }
             newRow += direction[0];
             newCol += direction[1];

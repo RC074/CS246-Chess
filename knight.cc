@@ -14,7 +14,7 @@ PieceType Knight::pieceType() const {
 }
 
 
-std::vector<Move> Knight::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
+std::vector<Move> Knight::getPossibleMoves(std::vector<std::vector<Piece*> > board, bool potential) const {
     std::vector<Move> moves;
 
      const int movesOffset[8][2] = {
@@ -33,7 +33,7 @@ std::vector<Move> Knight::getPossibleMoves(std::vector<std::vector<Piece*> > boa
 
         if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
             Piece *targetPiece = board[newRow][newCol];
-            if (!targetPiece || targetPiece->getColor() != this->getColor()) {
+            if (!targetPiece || potential || targetPiece->getColor() != this->getColor()) {
                 moves.push_back({currentRow, currentCol, newRow, newCol, targetPiece, this});
             }
         }

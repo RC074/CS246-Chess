@@ -14,7 +14,7 @@ PieceType Queen::pieceType() const {
 }
 
 
-std::vector<Move> Queen::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
+std::vector<Move> Queen::getPossibleMoves(std::vector<std::vector<Piece*> > board, bool potential) const {
     std::vector<Move> moves;
 
     // Define all possible directions the queen can move: vertical, horizontal, and diagonal
@@ -44,7 +44,8 @@ std::vector<Move> Queen::getPossibleMoves(std::vector<std::vector<Piece*> > boar
                     break;
                 }
             } else {
-              break;
+                if (potential) moves.push_back({currentRow, currentCol, newRow, newCol, targetPiece, this});
+                break;
             }
             newRow += direction[0];
             newCol += direction[1];

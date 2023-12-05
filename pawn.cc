@@ -25,13 +25,13 @@ vector<Move> Pawn::getThreat() {
     if (getCol() < 7) {
         moves.emplace_back(Move{getRow(), getCol(), getRow()+direction, getCol()+1, nullptr, this});
     }
-    
+    return moves;
 }
 
 
 
 
-vector<Move> Pawn::getPossibleMoves(std::vector<std::vector<Piece*> > board) const {
+vector<Move> Pawn::getPossibleMoves(std::vector<std::vector<Piece*> > board, bool potential) const {
     vector<Move> moves;
     int direction = (this->getColor() == Color::WHITE) ? -1 : 1; // Assuming white pawns move up (decrease in row)
 
@@ -60,7 +60,7 @@ vector<Move> Pawn::getPossibleMoves(std::vector<std::vector<Piece*> > board) con
           newRow += direction;
           if (newRow >= 0 && newRow < 8) {
               targetPiece = board[newRow][currentCol];
-              if (!targetPiece) {
+              if (!targetPiece && !board[newRow-direction][currentCol]) {
                   moves.push_back({currentRow, currentCol, newRow, currentCol, targetPiece, this});
               }
           }

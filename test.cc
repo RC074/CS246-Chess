@@ -146,24 +146,24 @@ int main(int argc, char const *argv[]) {
                             
                             cout << board << endl;
                             if (board.staleMate(Color::BLACK)) {
-                                cout << "Draw" << endl;
+                                cout << "Stalemate!" << endl;
                                 whiteScoreRaw += 5;
                                 blackScoreRaw += 5;
                                 break;
                             }
                             if (board.staleMate(Color::WHITE)) {
-                                cout << "Draw" << endl;
+                                cout << "Stalemate!" << endl;
                                 whiteScoreRaw += 5;
                                 blackScoreRaw += 5;
                                 break;
                             }
                             if (board.checkMate(Color::BLACK)) {
-                                cout << "White Player Wins" << endl;
+                                cout << "Checkmate! White Wins!" << endl;
                                 whiteScoreRaw += 10;
                                 break;
                             }
                             if (board.checkMate(Color::WHITE)) {
-                                cout << "Black Player Wins" << endl;
+                                cout << "Checkmate! Black Wins!" << endl;
                                 blackScoreRaw += 10;
                                 break;
                             }
