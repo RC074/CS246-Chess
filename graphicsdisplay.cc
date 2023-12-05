@@ -1,6 +1,15 @@
 #include "graphicsdisplay.h"
 
-GraphicsDisplay::GraphicsDisplay(int n, Xwindow &w): gridSize{n}, window{w} {}
+GraphicsDisplay::GraphicsDisplay(int n, Xwindow &w): gridSize{n}, window{w} {
+    for (int i = 1; i <= gridSize; i++) {
+        std::string font = "-b&h-lucidatypewriter-bold-r-normal-sans-20-140-100-100-m-120-iso8859-10";
+        window.drawString(30, (i-1)*50 + 60, std::to_string(gridSize-i+1), Xwindow::Black, font);
+    }
+    for (int i = 0; i < gridSize; i++) {
+        std::string font = "-b&h-lucidatypewriter-bold-r-normal-sans-20-140-100-100-m-120-iso8859-10";
+        window.drawString((i)*50 + 70, 50*gridSize + 50, std::string(1, (char)(97+i)), Xwindow::Black, font);
+    }
+}
 
 char GraphicsDisplay::pieceToChar(Piece *p) {
     int asciiValue = 0;
@@ -39,9 +48,9 @@ void GraphicsDisplay::notify(Move m) {
     int y = oldr * cellWH;
 
     if ((oldr % 2 == 1 && oldc % 2 == 1) || (oldr % 2 == 0 && oldc % 2 == 0)) {
-        window.fillRectangle(x, y, cellWH, cellWH, Xwindow::White);
+        window.fillRectangle(x+50, y+30, cellWH, cellWH, Xwindow::White);
     } else {
-        window.fillRectangle(x, y, cellWH, cellWH, Xwindow::Black);
+        window.fillRectangle(x+50, y+30, cellWH, cellWH, Xwindow::Black);
     }
 
     x = newc * cellWH;
@@ -51,7 +60,7 @@ void GraphicsDisplay::notify(Move m) {
         char pieceChar = pieceToChar(const_cast<Piece*>(m.p));
         std::string pieceStr(1, pieceChar);
         std::string font = "-b&h-lucidatypewriter-bold-r-normal-sans-20-140-100-100-m-120-iso8859-10";
-        window.drawString(x+22, y+31, pieceStr, Xwindow::Blue, font);
+        window.drawString(x+20+50, y+60, pieceStr, m.p->getColor() == Color::BLACK ? Xwindow::Red : Xwindow::Blue, font);
         // window.drawString(x, y, pieceStr);
     }
 }

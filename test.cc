@@ -138,7 +138,7 @@ int main(int argc, char const *argv[]) {
                         cin >> cmd;
 
                         if (cmd == "move") {
-                            if (!p.move(cin)) {
+                            if (!p.move(cin, useStandard)) {
                                 cout << "invalid move" << endl;
                                 continue;
                             }

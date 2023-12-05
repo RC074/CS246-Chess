@@ -18,7 +18,7 @@ protected:
 public:
     void setBoard(Board *b);
     void resign();
-    bool move(istream &instruction); // some player needs input
+    bool move(istream &instruction, bool useStandard); // some player needs input
     void setColor(Color c);
     Color getColor() const;
     virtual PlayerType playerType() const = 0;
