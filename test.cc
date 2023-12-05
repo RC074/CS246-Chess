@@ -34,9 +34,10 @@ int main(int argc, char const *argv[]) {
     Xwindow window;
     Board board {window};
     Color turn = Color::WHITE;
+    int blackScoreRaw = 0; // real score is this score divided by 10.
+    int whiteScoreRaw = 0;
 
-    while(true) {
-        cin >> cmd;
+    while(cin >> cmd) {
 
         if (cmd == "setup") {
             cout << "entering setup mode" << endl;
@@ -146,18 +147,24 @@ int main(int argc, char const *argv[]) {
                             cout << board << endl;
                             if (board.staleMate(Color::BLACK)) {
                                 cout << "Draw" << endl;
+                                whiteScoreRaw += 5;
+                                blackScoreRaw += 5;
                                 break;
                             }
                             if (board.staleMate(Color::WHITE)) {
                                 cout << "Draw" << endl;
+                                whiteScoreRaw += 5;
+                                blackScoreRaw += 5;
                                 break;
                             }
                             if (board.checkMate(Color::BLACK)) {
                                 cout << "White Player Wins" << endl;
+                                whiteScoreRaw += 10;
                                 break;
                             }
                             if (board.checkMate(Color::WHITE)) {
                                 cout << "Black Player Wins" << endl;
+                                blackScoreRaw += 10;
                                 break;
                             }
 
@@ -194,4 +201,15 @@ int main(int argc, char const *argv[]) {
         }
         
     } // while
+
+    // after ctrl-D
+    cout << "Final Score:" << endl;
+    ostringstream whiteScore;
+    ostringstream blackScore;
+    whiteScore << whiteScoreRaw / 10;
+    blackScore << blackScoreRaw / 10;
+    if (whiteScoreRaw % 10 > 0) whiteScore << "." << whiteScoreRaw % 10;
+    if (blackScoreRaw % 10 > 0) blackScore << "." << blackScoreRaw % 10;
+    cout << "White: " << whiteScore.str() << endl;
+    cout << "Black: " << blackScore.str() << endl;
 }
