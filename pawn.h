@@ -5,7 +5,11 @@
 #include "piece.h"
 
 class Pawn : public Piece {
+    bool justMovedTwoCells = false;
 public:
+    bool hasJustMovedTwoCells() const;
+    void resetFlag();
+    void setMovedTwoCells();
     Pawn(int row, int col, Color color);
     ~Pawn() override;
     std::vector<Move> getPossibleMoves(std::vector<std::vector<Piece*>> board, bool potential=false) const override;

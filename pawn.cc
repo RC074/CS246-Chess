@@ -28,8 +28,19 @@ vector<Move> Pawn::getThreat() {
     return moves;
 }
 
+bool Pawn::hasJustMovedTwoCells() const {
+    return justMovedTwoCells;
+}
 
+void Pawn::resetFlag() {
+    justMovedTwoCells = false;
+    // cout <<"TAT"<<endl;
+}
 
+void Pawn::setMovedTwoCells() {
+    justMovedTwoCells = true;
+    // cout << "yay" << endl;
+}
 
 vector<Move> Pawn::getPossibleMoves(std::vector<std::vector<Piece*> > board, bool potential) const {
     vector<Move> moves;
@@ -49,11 +60,25 @@ vector<Move> Pawn::getPossibleMoves(std::vector<std::vector<Piece*> > board, boo
             if (targetPiece && targetPiece->getColor() != this->getColor()) {
                 moves.push_back({currentRow, currentCol, newRow, currentCol-1, targetPiece, this});
             }
+            Piece *pieceBeside = board[currentRow][currentCol-1];
+            if (!targetPiece && pieceBeside && pieceBeside->getColor() != this->getColor() &&
+                pieceBeside->pieceType()==PieceType::PAWN &&
+                dynamic_cast<Pawn *> (pieceBeside)->hasJustMovedTwoCells()) {
+                    moves.push_back({currentRow, currentCol, newRow, 
+                    currentCol-1, pieceBeside, this});
+            }
         }
         if (currentCol+1 < 8) {
             targetPiece = board[newRow][currentCol+1];
             if (targetPiece && targetPiece->getColor() != this->getColor()) {
                 moves.push_back({currentRow, currentCol, newRow, currentCol+1, targetPiece, this});
+            }
+            Piece *pieceBeside = board[currentRow][currentCol+1];
+            if (!targetPiece && pieceBeside && pieceBeside->getColor() != this->getColor() &&
+                pieceBeside->pieceType()==PieceType::PAWN &&
+                dynamic_cast<Pawn *> (pieceBeside)->hasJustMovedTwoCells()) {
+                    moves.push_back({currentRow, currentCol, newRow, 
+                    currentCol+1, pieceBeside, this});
             }
         }
         if (!getMoved()) {

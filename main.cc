@@ -148,22 +148,26 @@ int main(int argc, char const *argv[]) {
                                 cout << "Stalemate!" << endl;
                                 whiteScoreRaw += 5;
                                 blackScoreRaw += 5;
+                                turn = Color::WHITE;
                                 break;
                             }
                             if (board.staleMate(Color::WHITE)) {
                                 cout << "Stalemate!" << endl;
                                 whiteScoreRaw += 5;
                                 blackScoreRaw += 5;
+                                turn = Color::WHITE;
                                 break;
                             }
                             if (board.checkMate(Color::BLACK)) {
                                 cout << "Checkmate! White Wins!" << endl;
                                 whiteScoreRaw += 10;
+                                turn = Color::WHITE;
                                 break;
                             }
                             if (board.checkMate(Color::WHITE)) {
                                 cout << "Checkmate! Black Wins!" << endl;
                                 blackScoreRaw += 10;
+                                turn = Color::WHITE;
                                 break;
                             }
                             if (board.inCheck(Color::WHITE)) {
@@ -180,8 +184,14 @@ int main(int argc, char const *argv[]) {
                             cout << board << endl;
                         }
                         else if (cmd == "resign") {
-                            if (turn == Color::WHITE) cout << "Black wins!" << endl;
-                            else cout << "White wins!" << endl;
+                            if (turn == Color::WHITE) {
+                                cout << "Black wins!" << endl;
+                                blackScoreRaw += 10;
+                            } else {
+                                cout << "White wins!" << endl;
+                                whiteScoreRaw += 10;
+                            }
+                            turn = Color::WHITE;
                             break;
                         }
                         else {

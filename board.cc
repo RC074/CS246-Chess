@@ -318,10 +318,14 @@ bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
         throw std::out_of_range{"out of board range"};
     }
     if (!pieceToMove) return false;
-    vector<Move> moves = pieceToMove->getPossibleMoves(theBoard);
+    const auto &constB = theBoard;
+    vector<Move> moves = pieceToMove->getPossibleMoves(constB);
+    if (movedTwoCells) movedTwoCells->resetFlag();
+    movedTwoCells = nullptr;
     bool moved = false;
     for (Move m : moves) {
         if (m.r1 == row && m.c1 == col) { // checking if valid move
+            int orgRow = pieceToMove->getRow();
             pieceToMove->setPosition(row, col);
             theBoard[m.r0][m.c0] = nullptr;
             theBoard[m.r1][m.c1] = pieceToMove;
@@ -334,17 +338,29 @@ bool Board::move(Piece *pieceToMove, int row, int col, PieceType promotion) {
             }
 
             if (m.captures) {
+                movedTwoCells = nullptr;
                 Piece *capturedPiece = m.captures;
                 capturedPiece->setIsCaptured(true);
+                int r = capturedPiece->getRow();
+                int c = capturedPiece->getCol();
 
                 // Move m = getPreviousMove();
-                gd->notify(Move{m.r1, m.c1, m.r1, m.c1, nullptr, nullptr});
-                delete capturedPiece;                               
+                if (r != row || c != col) removePieceAt(r, c);
+                else {
+                    gd->notify(Move{r, c, r, c, nullptr, nullptr});
+                    delete m.captures;
+                }              
             }
 
             if (pieceToMove->pieceType() == PieceType::PAWN && 
                 (pieceToMove->getRow() == 0 || pieceToMove->getRow() == 7)) {
                     promotePawn(pieceToMove, row, col, promotion);
+            }
+            if (pieceToMove->pieceType() == PieceType::PAWN && 
+                abs(row - orgRow) == 2) {
+                    // cout << "222" << endl;
+                movedTwoCells = dynamic_cast<Pawn *>(pieceToMove);
+                movedTwoCells->setMovedTwoCells();
             }
 
             // Move m = getPreviousMove();

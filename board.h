@@ -34,6 +34,7 @@ class Board{
     vector<vector<bool>> whiteDangerZone;
     vector<vector<bool>> blackDangerZone;
     bool noLegalMoves(Color color);
+    Pawn *movedTwoCells = nullptr;
 public:
     Board(Xwindow &window);
     ~Board();
